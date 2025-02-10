@@ -24,19 +24,29 @@
             max-width: 400px;
         }
 
-        .save-btn {
+        .save-btn, .nav-btn {
             margin-top: 10px;
             padding: 5px 10px;
             cursor: pointer;
-            background-color: green;
-            color: white;
             border: none;
             border-radius: 5px;
+        }
+
+        .save-btn {
+            background-color: green;
+            color: white;
+        }
+
+        .nav-btn {
+            background-color: blue;
+            color: white;
         }
     </style>
 </head>
 <body>
-    <h1>Ingresar Datos del Mazo</h1>
+    <h1>Magic</h1> 
+    <h2>Ingresa el mazo</h2> 
+    <p class="first-paragraph">Ingresar mazo.</p>
     <div id="data-container">
         <input type="text" id="deck" placeholder="Nombre del mazo">
         <input type="text" id="dueño" placeholder="Nombre del dueño">
@@ -46,6 +56,9 @@
         <input type="text" id="clase" placeholder="Clase del mazo">
         <button class="save-btn" onclick="guardarDatos()">Guardar Datos</button>
     </div>
+
+    <!-- Botón para ir a la página de datos -->
+    <button class="nav-btn" onclick="window.location.href='datos.html'">Ver Datos Guardados</button>
 
     <script>
         const API_KEY = 'AIzaSyDVXiprwpI7xTEGZYzJY7gSC3XyXTQJtrs';  // Reemplaza con tu clave de API
