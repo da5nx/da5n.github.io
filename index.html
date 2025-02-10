@@ -70,7 +70,7 @@
     <h2>Listas mazos</h2>
     <p class="first-paragraph">Ingresar mazo.</p>
     <p class="second-paragraph">detalles</p>
-    
+
     <!-- Formulario de inicio de sesión -->
     <div id="login-container">
         <h3>Iniciar Sesión</h3>
@@ -86,11 +86,9 @@
     </div>
 
     <script>
-        // Datos de usuarios que han iniciado sesión
         let usuariosRegistrados = [];
         let usuarioActual = null;
 
-        // Función para simular inicio de sesión
         function iniciarSesion() {
             const username = document.getElementById("username").value;
             if (username) {
@@ -104,100 +102,93 @@
             }
         }
 
-        // Función para cargar usuarios de GitHub
         function cargarUsuariosGitHub() {
             fetch("https://api.github.com/users")
                 .then(response => response.json())
                 .then(data => {
                     let userList = document.getElementById("user-list");
-                    let numUsuarios = 5; // Cambia este valor para mostrar más o menos usuarios
-                    data.slice(0, numUsuarios).forEach(user => {
+                    userList.innerHTML = "";
+                    data.slice(0, 5).forEach(user => {
                         let li = document.createElement("li");
                         li.classList.add("user-item");
-                        
+
                         let input = document.createElement("input");
                         input.type = "text";
                         input.value = user.login;
-                        
+
                         let link = document.createElement("a");
                         link.href = `prueba.html?user=${encodeURIComponent(user.login)}`;
                         link.textContent = "Ver detalles";
                         link.style.display = "block";
-                        
+
                         li.appendChild(input);
                         li.appendChild(document.createElement("br"));
                         li.appendChild(link);
-                        
+
                         userList.appendChild(li);
                     });
                 })
                 .catch(error => console.error("Error al cargar usuarios:", error));
         }
 
-        // Función para guardar cambios en GitHub
+        async function obtenerSHAActual(url, token) {
+            const response = await fetch(url, {
+                headers: { Authorization: `token ${token}` }
+            });
+            if (response.ok) {
+                const data = await response.json();
+                return data.sha;
+            }
+            return null;
+        }
+
         async function guardarCambios() {
             if (!usuarioActual) {
                 alert("Debes iniciar sesión para guardar cambios.");
                 return;
             }
 
-            const token = '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'; // Tu token de acceso
-            const repo = 'da5nx/da5n.github.io'; // Tu repositorio
-            const rutaArchivo = 'usuarios.json'; // Ruta del archivo en el repositorio
+            const token = 'TU_NUEVO_TOKEN_SEGURO'; 
+            const repo = 'da5nx/da5n.github.io';
+            const rutaArchivo = 'usuarios.json';
             const url = `https://api.github.com/repos/${repo}/contents/${rutaArchivo}`;
 
-            // Obtener los valores actualizados de los inputs
             let inputs = document.querySelectorAll("#user-list input");
-            let usuariosEditados = [];
-            inputs.forEach(input => {
-                usuariosEditados.push({ username: input.value });
-            });
+            let usuariosEditados = Array.from(inputs).map(input => ({ username: input.value }));
 
-            // Agregar el usuario actual a la lista de usuarios registrados
             usuariosRegistrados.push({ usuario: usuarioActual, fecha: new Date().toISOString() });
-
-            // Convertir datos a JSON
             const contenido = JSON.stringify(usuariosRegistrados, null, 2);
-            const contenidoCodificado = btoa(contenido); // Codificar en base64
+            const contenidoCodificado = btoa(unescape(encodeURIComponent(contenido)));
 
-            // Obtener el SHA del archivo actual (si existe)
-            let sha;
-            try {
-                const response = await fetch(url, {
-                    headers: {
-                        Authorization: `token ${token}`
-                    }
-                });
-                const data = await response.json();
-                sha = data.sha; // SHA del archivo actual
-            } catch (error) {
-                console.log('El archivo no existe, se creará uno nuevo.');
-            }
+            const shaActual = await obtenerSHAActual(url, token);
 
-            // Subir el archivo
             const body = {
                 message: "Actualización de usuarios registrados",
                 content: contenidoCodificado,
-                sha: sha // SHA del archivo actual
+                ...(shaActual && { sha: shaActual })
             };
 
-            fetch(url, {
-                method: 'PUT',
-                headers: {
-                    Authorization: `token ${token}`,
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(body)
-            })
-            .then(response => response.json())
-            .then(data => {
+            try {
+                const response = await fetch(url, {
+                    method: 'PUT',
+                    headers: {
+                        Authorization: `token ${token}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(body)
+                });
+
+                if (!response.ok) {
+                    throw new Error(`Error: ${response.status}`);
+                }
+
+                const data = await response.json();
                 console.log('Datos guardados correctamente:', data);
                 alert('Cambios guardados en GitHub.');
-            })
-            .catch(error => {
+            } catch (error) {
                 console.error('Error al guardar los datos:', error);
-                alert('Error al guardar los cambios.');
-            });
+                alert(`Error al guardar los cambios: ${error.message}`);
+            }
         }
     </script>
 </body>
