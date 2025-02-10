@@ -65,7 +65,7 @@
         const SHEET_ID = '1MpbzGootI5Miphba0rhnDaGD0SH17zPzm_TMoN_tzo0'; // ID de la hoja de cálculo
         const SHEET_NAME = 'Hoja 4'; // Nombre de la pestaña en Google Sheets
 
-        async function guardarDatos() {
+        function guardarDatos() {
             const deck = document.getElementById('deck').value;
             const dueño = document.getElementById('dueño').value;
             const creador = document.getElementById('creador').value;
@@ -74,38 +74,24 @@
             const clase = document.getElementById('clase').value;
 
             if (dueño && deck && creador && de_precon && modificado && clase) {
-                try {
-                    // Obtener la próxima fila vacía a partir de la fila 10
-                    const response = await fetch(`https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${SHEET_NAME}!A10:A?key=${API_KEY}`);
+                const datos = [dueño, deck, creador, de_precon, modificado, clase];
+
+                fetch(`https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${SHEET_NAME}!A1:append?valueInputOption=RAW&key=${API_KEY}`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ values: [datos] })
+                })
+                .then(response => {
                     if (!response.ok) {
-                        throw new Error('Error al obtener datos: ' + response.statusText);
+                        throw new Error('Error en la solicitud: ' + response.statusText);
                     }
-                    const data = await response.json();
-                    const nextRow = data.values ? data.values.length + 10 : 10; // Fila vacía
-
-                    // Definir las columnas específicas donde se guardarán los datos
-                    const range = `${SHEET_NAME}!B${nextRow}:G${nextRow}`; // Columnas B a G
-
-                    // Datos a guardar
-                    const datos = [dueño, creador, deck, de_precon, modificado, clase];
-
-                    // Guardar los datos en las columnas específicas
-                    const updateResponse = await fetch(`https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${range}?valueInputOption=RAW&key=${API_KEY}`, {
-                        method: 'PUT',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ values: [datos] })
-                    });
-
-                    if (!updateResponse.ok) {
-                        throw new Error('Error al guardar datos: ' + updateResponse.statusText);
-                    }
-
+                    return response.json();
+                })
+                .then(data => {
                     alert('Datos guardados en Google Sheets.');
                     window.location.href = 'datos.html'; // Redirigir a la página de datos
-                } catch (error) {
-                    console.error('Error:', error);
-                    alert('Hubo un error al guardar los datos.');
-                }
+                })
+                .catch(error => console.error('Error al guardar en Google Sheets:', error));
             } else {
                 alert('Por favor, complete todos los campos.');
             }
