@@ -69,7 +69,7 @@
     <h1>MAGIC</h1>
     <h2>Listas mazos</h2>
     <p class="first-paragraph">Ingresar mazo.</p>
-    <p class="second-paragraph">prueba</p>
+    <p class="second-paragraph">detalles</p>
     
     <!-- Formulario de inicio de sesión -->
     <div id="login-container">
@@ -120,7 +120,7 @@
                         input.value = user.login;
                         
                         let link = document.createElement("a");
-                        link.href = `prueba.html?user=${encodeURIComponent(user.login)}`;
+                        link.href = `detalles.html?user=${encodeURIComponent(user.login)}`;
                         link.textContent = "Ver detalles";
                         link.style.display = "block";
                         
@@ -141,10 +141,10 @@
                 return;
             }
 
-            const token = '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'; // Reemplaza con tu token
-            const repo = 'da5nx/da5n.github.io'; // Reemplaza con tu usuario y repositorio
+            const token = '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'; // Tu token de acceso
+            const repo = 'da5nx/da5n.github.io'; // Tu repositorio
             const rutaArchivo = 'usuarios.json'; // Ruta del archivo en el repositorio
-            const url = `https://api.github.com/repos/${da5nx/da5n.github.io}/contents/${usuarios.json}`;
+            const url = `https://api.github.com/repos/${repo}/contents/${rutaArchivo}`;
 
             // Obtener los valores actualizados de los inputs
             let inputs = document.querySelectorAll("#user-list input");
@@ -160,25 +160,11 @@
             const contenido = JSON.stringify(usuariosRegistrados, null, 2);
             const contenidoCodificado = btoa(contenido); // Codificar en base64
 
-            // Obtener el SHA del archivo actual (si existe)
-            let sha;
-            try {
-                const response = await fetch(url, {
-                    headers: {
-                        Authorization: `token ${token}`
-                    }
-                });
-                const data = await response.json();
-                sha = data.sha; // SHA del archivo actual
-            } catch (error) {
-                console.log('El archivo no existe, se creará uno nuevo.');
-            }
-
             // Subir el archivo
             const body = {
                 message: "Actualización de usuarios registrados",
                 content: contenidoCodificado,
-                sha: sha
+                sha: "8b137891791fe96927ad78e64b0aad7bded08bdc" // SHA del archivo actual
             };
 
             fetch(url, {
