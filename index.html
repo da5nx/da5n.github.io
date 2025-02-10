@@ -160,11 +160,25 @@
             const contenido = JSON.stringify(usuariosRegistrados, null, 2);
             const contenidoCodificado = btoa(contenido); // Codificar en base64
 
+            // Obtener el SHA del archivo actual (si existe)
+            let sha;
+            try {
+                const response = await fetch(url, {
+                    headers: {
+                        Authorization: `token ${token}`
+                    }
+                });
+                const data = await response.json();
+                sha = data.sha; // SHA del archivo actual
+            } catch (error) {
+                console.log('El archivo no existe, se creará uno nuevo.');
+            }
+
             // Subir el archivo
             const body = {
                 message: "Actualización de usuarios registrados",
                 content: contenidoCodificado,
-                sha: "8b137891791fe96927ad78e64b0aad7bded08bdc" // SHA del archivo actual
+                sha: sha // SHA del archivo actual
             };
 
             fetch(url, {
