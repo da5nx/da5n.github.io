@@ -26,7 +26,7 @@
             background-color: #f2f2f2;
         }
         /* Estilos para las celdas */
-        .col-num { width: 30px; }
+        .col-num { width: 20px; }
         .col-dueno { width: 100px; }
         .col-creador { width: 100px; }
         .col-mazo { width: 80px; }
@@ -39,11 +39,11 @@
         .col-vacio6, .col-vacio7, .col-vacio12 { width: 5px; }
         .col-vacio8, .col-vacio9, .col-vacio10, .col-vacio11 { width: 100px; }
         .nav-btn {
-            margin-top: 20px;
+            margin-top: 2000px;
             padding: 5px 10px;
             cursor: pointer;
-            background-color: blue;
-            color: white;
+            background-color: white;
+            color: black;
             border: none;
             border-radius: 5px;
         }
@@ -52,6 +52,10 @@
 <body>
     <h1>Datos Guardados</h1>
     <table id="data-table">
+
+    <!-- Botón para volver a la página de ingreso de datos -->
+    <button class="nav-btn" onclick="window.location.href='index.html'">Volver a Ingresar Datos</button>
+        
         <thead>
             <tr>
                 <th class="col-num">Nº</th>
@@ -81,9 +85,6 @@
             <!-- Los datos se cargarán aquí dinámicamente -->
         </tbody>
     </table>
-
-    <!-- Botón para volver a la página de ingreso de datos -->
-    <button class="nav-btn" onclick="window.location.href='index.html'">Volver a Ingresar Datos</button>
 
     <script>
         const API_KEY = 'AIzaSyDVXiprwpI7xTEGZYzJY7gSC3XyXTQJtrs';  // Reemplaza con tu clave de API
