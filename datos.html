@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Datos Guardados</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        h1 {
+            text-align: center;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+    <h1>Datos Guardados</h1>
+    <table id="data-table">
+        <thead>
+            <tr>
+                <th>Dueño</th>
+                <th>Mazo</th>
+                <th>Creador</th>
+                <th>Precon</th>
+                <th>Modificado</th>
+                <th>Clase</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Los datos se cargarán aquí dinámicamente -->
+        </tbody>
+    </table>
+
+    <script>
+        const API_KEY = 'AIzaSyDVXiprwpI7xTEGZYzJY7gSC3XyXTQJtrs';  // Reemplaza con tu clave de API
+        const SHEET_ID = '1MpbzGootI5Miphba0rhnDaGD0SH17zPzm_TMoN_tzo0'; // ID de la hoja de cálculo
+        const SHEET_NAME = 'Hoja 4'; // Nombre de la pestaña en Google Sheets
+
+        function cargarDatos() {
+            fetch(`https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${SHEET_NAME}?key=${API_KEY}`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Error en la solicitud: ' + response.statusText);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    const rows = data.values || [];
+                    const tbody = document.querySelector('#data-table tbody');
+                    tbody.innerHTML = ''; // Limpiar la tabla antes de cargar nuevos datos
+
+                    rows.forEach((item, index) => {
+                        if (index === 0) return; // Saltar la primera fila (encabezados)
+                        const tr = document.createElement('tr');
+                        item.forEach(cell => {
+                            const td = document.createElement('td');
+                            td.textContent = cell;
+                            tr.appendChild(td);
+                        });
+                        tbody.appendChild(tr);
+                    });
+                })
+                .catch(error => console.error('Error al cargar datos:', error));
+        }
+
+        // Cargar los datos cuando la página se cargue
+        document.addEventListener('DOMContentLoaded', cargarDatos);
+    </script>
+</body>
+</html>
