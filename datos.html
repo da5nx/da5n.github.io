@@ -92,7 +92,7 @@
         const SHEET_NAME = 'Hoja 4'; // Nombre de la pestaña en Google Sheets
 
         function cargarDatos() {
-            fetch(`https://sheets.googleapis.com/v4/spreadsheets/${1MpbzGootI5Miphba0rhnDaGD0SH17zPzm_TMoN_tzo0}/values/${Hoja 4}?key=${AIzaSyDVXiprwpI7xTEGZYzJY7gSC3XyXTQJtrs}`)
+            fetch(`https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${SHEET_NAME}?key=${API_KEY}`)
                 .then(response => {
                     if (!response.ok) {
                         throw new Error('Error en la solicitud: ' + response.statusText);
@@ -142,6 +142,7 @@
                 })
                 .catch(error => console.error('Error al cargar datos:', error));
         }
+        
         // Cargar los datos cuando la página se cargue
         document.addEventListener('DOMContentLoaded', cargarDatos);
     </script>
