@@ -56,27 +56,28 @@
     <h1>Magic</h1> 
     <h2>Ingresa el mazo</h2> 
     <p class="first-paragraph">Ingresar mazo.</p>
-    <div id="data-container">
-        <label for="deck">Nombre del mazo</label>
-        <input type="text" id="deck" placeholder="Nombre del mazo">
+<div id="data-container" style="display: grid; grid-template-columns: 1fr 2fr; gap: 10px; align-items: center;">
+    <label for="deck">Nombre del mazo</label>
+    <input type="text" id="deck" placeholder="Nombre del mazo">
 
-        <label for="dueño">Nombre del dueño</label>
-        <input type="text" id="dueño" placeholder="Nombre del dueño">
+    <label for="dueño">Dueño</label>
+    <input type="text" id="dueño" placeholder="Nombre del dueño">
 
-        <label for="creador">Nombre del creador</label>
-        <input type="text" id="creador" placeholder="Nombre del creador">
+    <label for="creador">Nombre del creador</label>
+    <input type="text" id="creador" placeholder="Nombre del creador">
 
-        <label for="de_precon">Precon?</label>
-        <input type="text" id="de_precon" placeholder="Precon?">
+    <label for="de_precon">Precon?</label>
+    <input type="text" id="de_precon" placeholder="Precon?">
 
-        <label for="modificado">Mazo modificado</label>
-        <input type="text" id="modificado" placeholder="Mazo modificado">
+    <label for="modificado">Mazo modificado</label>
+    <input type="text" id="modificado" placeholder="Mazo modificado">
 
-        <label for="clase">Clase del mazo</label>
-        <input type="text" id="clase" placeholder="Clase del mazo">
+    <label for="clase">Clase del mazo</label>
+    <input type="text" id="clase" placeholder="Clase del mazo">
 
-        <button class="save-btn" onclick="iniciarAutenticacion()">Guardar Datos</button>
-    </div>
+    <div></div> <!-- Espacio en blanco para alinear el botón -->
+    <button class="save-btn" onclick="iniciarAutenticacion()">Guardar Datos</button>
+</div>
 
     <h2>Datos Guardados</h2>
     <button class="nav-btn" onclick="window.location.href='datos.html'">Ver Datos Guardados</button>
@@ -90,7 +91,7 @@
 
         function iniciarAutenticacion() {
             const oauth2Endpoint = 'https://accounts.google.com/o/oauth2/v2/auth';
-            const redirectUri = 'http://localhost:5500'; 
+            const redirectUri = 'https://docs.google.com/spreadsheets/d/1MpbzGootI5Miphba0rhnDaGD0SH17zPzm_TMoN_tzo0/edit?usp=sharing'; 
             const scope = 'https://www.googleapis.com/auth/spreadsheets';
 
             const params = {
