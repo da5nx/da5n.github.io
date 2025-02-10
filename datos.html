@@ -25,6 +25,15 @@
         th {
             background-color: #f2f2f2;
         }
+        .nav-btn {
+            margin-top: 20px;
+            padding: 5px 10px;
+            cursor: pointer;
+            background-color: blue;
+            color: white;
+            border: none;
+            border-radius: 5px;
+        }
     </style>
 </head>
 <body>
@@ -44,6 +53,9 @@
             <!-- Los datos se cargarán aquí dinámicamente -->
         </tbody>
     </table>
+
+    <!-- Botón para volver a la página de ingreso de datos -->
+    <button class="nav-btn" onclick="window.location.href='index.html'">Volver a Ingresar Datos</button>
 
     <script>
         const API_KEY = 'AIzaSyDVXiprwpI7xTEGZYzJY7gSC3XyXTQJtrs';  // Reemplaza con tu clave de API
