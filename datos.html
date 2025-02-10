@@ -39,11 +39,15 @@
 <body>
     <h1>Datos Guardados</h1>
     <table id="data-table">
+
+    <!-- Botón para volver a la página de ingreso de datos -->
+    <button class="nav-btn" onclick="window.location.href='index.html'">Volver a Ingresar Datos</button>
+        
         <thead>
             <tr>
                 <th>Dueño</th>
-                <th>Mazo</th>
                 <th>Creador</th>
+                <th>Mazo</th>
                 <th>Precon</th>
                 <th>Modificado</th>
                 <th>Clase</th>
@@ -54,8 +58,7 @@
         </tbody>
     </table>
 
-    <!-- Botón para volver a la página de ingreso de datos -->
-    <button class="nav-btn" onclick="window.location.href='index.html'">Volver a Ingresar Datos</button>
+
 
     <script>
         const API_KEY = 'AIzaSyDVXiprwpI7xTEGZYzJY7gSC3XyXTQJtrs';  // Reemplaza con tu clave de API
