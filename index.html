@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>da5n.github.io</title>
+    <title>da5nx.github.io</title>
     <style>
         body {
             display: flex;
@@ -15,16 +15,7 @@
             text-align: center;
             font-family: Arial, sans-serif;
         }
-        #user-container {
-            background-color: lightgray;
-            padding: 15px;
-            border-radius: 10px;
-            width: 80%;
-            max-width: 400px;
-            position: absolute;  /* Posición absoluta para mover el contenedor */
-            bottom: 20px;        /* Espacio desde el fondo */
-            right: 20px;         /* Espacio desde la derecha */
-        }
+
         /* Estilo para la lista */
         #user-list {
             list-style-type: none;
@@ -71,7 +62,7 @@
     <ul id="user-list"></ul>
 
     <!-- Enlace al nuevo repositorio -->
-    <a href="https://github.com/da5nx/da5n.github.io/blob/da5n.github.io/formulario/" target="_blank">Ir al repositorio de mazos</a>
+    <a href="https://<usuario>.github.io/magic-decks/" target="_blank">Ir al repositorio de mazos</a>
 
     <script>
         // Cargar la lista de usuarios desde la API
@@ -79,9 +70,9 @@
             .then(response => response.json())
             .then(data => {
                 let userList = document.getElementById("user-list");
-                let numUsuarios = 5; // Cambia este valor para mostrar más o menos usuarios
-                data.slice(0, numUsuarios).forEach(user => { // Aquí limitamos los usuarios
+                data.forEach(user => {
                     let li = document.createElement("li");
+
                     // Crear enlace
                     let link = document.createElement("a");
                     link.href = `prueba.html?user=${user.login}`; // Enlace con el nombre del usuario
