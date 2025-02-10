@@ -25,6 +25,19 @@
         th {
             background-color: #f2f2f2;
         }
+        /* Estilos para las celdas */
+        .col-num { width: 50px; }
+        .col-dueno { width: 100px; }
+        .col-creador { width: 120px; }
+        .col-mazo { width: 80px; }
+        .col-precon { width: 70px; }
+        .col-modificado { width: 90px; }
+        .col-clase { width: 100px; }
+        .col-colores { width: 150px; }
+        .col-nombre { width: 200px; }
+        .col-vacio1, .col-vacio2, .col-vacio3, .col-vacio4, .col-vacio5,
+        .col-vacio6, .col-vacio7, .col-vacio8, .col-vacio9, .col-vacio10,
+        .col-vacio11, .col-vacio12 { width: 10px; }
         .nav-btn {
             margin-top: 20px;
             padding: 5px 10px;
@@ -39,33 +52,29 @@
 <body>
     <h1>Datos Guardados</h1>
     <table id="data-table">
-
-    <!-- Botón para volver a la página de ingreso de datos -->
-    <button class="nav-btn" onclick="window.location.href='index.html'">Volver a Ingresar Datos</button>
-        
         <thead>
             <tr>
-                <th>Nº</th>
-                <th> </th>
-                <th>Dueño</th>
-                <th> </th>
-                <th>Creador</th>
-                <th> </th>
-                <th>Mazo</th>
-                <th> </th>
-                <th>Precon</th>
-                <th> </th>
-                <th>Modificado</th>
-                <th> </th>
-                <th>Clase</th>
-                <th> </th>
-                <th> </th>
-                <th>Colores</th>
-                <th> </th>
-                <th> </th>
-                <th> </th>
-                <th> </th>
-                <th>Nombre</th>
+                <th class="col-num">Nº</th>
+                <th class="col-vacio1"> </th>
+                <th class="col-dueno">Dueño</th>
+                <th class="col-vacio2"> </th>
+                <th class="col-creador">Creador</th>
+                <th class="col-vacio3"> </th>
+                <th class="col-mazo">Mazo</th>
+                <th class="col-vacio4"> </th>
+                <th class="col-precon">Precon</th>
+                <th class="col-vacio5"> </th>
+                <th class="col-modificado">Modificado</th>
+                <th class="col-vacio6"> </th>
+                <th class="col-clase">Clase</th>
+                <th class="col-vacio7"> </th>
+                <th class="col-vacio8"> </th>
+                <th class="col-colores">Colores</th>
+                <th class="col-vacio9"> </th>
+                <th class="col-vacio10"> </th>
+                <th class="col-vacio11"> </th>
+                <th class="col-vacio12"> </th>
+                <th class="col-nombre">Nombre</th>
             </tr>
         </thead>
         <tbody>
@@ -73,7 +82,8 @@
         </tbody>
     </table>
 
-
+    <!-- Botón para volver a la página de ingreso de datos -->
+    <button class="nav-btn" onclick="window.location.href='index.html'">Volver a Ingresar Datos</button>
 
     <script>
         const API_KEY = 'AIzaSyDVXiprwpI7xTEGZYzJY7gSC3XyXTQJtrs';  // Reemplaza con tu clave de API
@@ -96,8 +106,33 @@
                     rows.forEach((item, index) => {
                         if (index === 0) return; // Saltar la primera fila (encabezados)
                         const tr = document.createElement('tr');
-                        item.forEach(cell => {
+
+                        // Asignar clases a cada celda según su posición
+                        item.forEach((cell, cellIndex) => {
                             const td = document.createElement('td');
+                            switch (cellIndex) {
+                                case 0: td.classList.add('col-num'); break;
+                                case 1: td.classList.add('col-vacio1'); break;
+                                case 2: td.classList.add('col-dueno'); break;
+                                case 3: td.classList.add('col-vacio2'); break;
+                                case 4: td.classList.add('col-creador'); break;
+                                case 5: td.classList.add('col-vacio3'); break;
+                                case 6: td.classList.add('col-mazo'); break;
+                                case 7: td.classList.add('col-vacio4'); break;
+                                case 8: td.classList.add('col-precon'); break;
+                                case 9: td.classList.add('col-vacio5'); break;
+                                case 10: td.classList.add('col-modificado'); break;
+                                case 11: td.classList.add('col-vacio6'); break;
+                                case 12: td.classList.add('col-clase'); break;
+                                case 13: td.classList.add('col-vacio7'); break;
+                                case 14: td.classList.add('col-vacio8'); break;
+                                case 15: td.classList.add('col-colores'); break;
+                                case 16: td.classList.add('col-vacio9'); break;
+                                case 17: td.classList.add('col-vacio10'); break;
+                                case 18: td.classList.add('col-vacio11'); break;
+                                case 19: td.classList.add('col-vacio12'); break;
+                                case 20: td.classList.add('col-nombre'); break;
+                            }
                             td.textContent = cell;
                             tr.appendChild(td);
                         });
