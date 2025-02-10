@@ -4,24 +4,96 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Detalles del Usuario</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+
+        #container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            margin: auto;
+        }
+
+        h1, h2 {
+            text-align: center;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        li {
+            background: #e9e9e9;
+            margin: 8px 0;
+            padding: 10px;
+            border-radius: 5px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        a {
+            text-decoration: none;
+            color: #007bff;
+        }
+
+        .loading {
+            text-align: center;
+            font-style: italic;
+        }
+
+        .error {
+            color: red;
+            text-align: center;
+            font-weight: bold;
+        }
+    </style>
 </head>
 <body>
-    <h1>Repositorios de GitHub</h1>
-    <h2 id="username"></h2>
-    <ul id="repos-list"></ul>
+    <div id="container">
+        <h1>Detalles del Usuario de GitHub</h1>
+        <h2 id="username">Cargando usuario...</h2>
+        <p class="loading" id="loading">Cargando repositorios...</p>
+        <ul id="repos-list"></ul>
+        <p class="error" id="error-msg" style="display: none;">No se encontraron repositorios o el usuario no existe.</p>
+    </div>
 
     <script>
         // Obtener el nombre de usuario de la URL
         const params = new URLSearchParams(window.location.search);
         const username = params.get("user");
 
+        const usernameElement = document.getElementById("username");
+        const reposList = document.getElementById("repos-list");
+        const loadingIndicator = document.getElementById("loading");
+        const errorMsg = document.getElementById("error-msg");
+
         if (username) {
-            document.getElementById("username").textContent = `Repos de ${username}`;
+            usernameElement.textContent = `Repositorios de ${username}`;
 
             fetch(`https://api.github.com/users/${username}/repos`)
-                .then(response => response.json())
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error("Usuario no encontrado");
+                    }
+                    return response.json();
+                })
                 .then(repos => {
-                    let reposList = document.getElementById("repos-list");
+                    loadingIndicator.style.display = "none"; // Ocultar el indicador de carga
+
+                    if (repos.length === 0) {
+                        errorMsg.style.display = "block";
+                        errorMsg.textContent = "Este usuario no tiene repositorios públicos.";
+                        return;
+                    }
 
                     repos.forEach(repo => {
                         let li = document.createElement("li");
@@ -34,9 +106,15 @@
                         reposList.appendChild(li);
                     });
                 })
-                .catch(error => console.error("Error al cargar repositorios:", error));
+                .catch(error => {
+                    console.error("Error al cargar repositorios:", error);
+                    loadingIndicator.style.display = "none";
+                    errorMsg.style.display = "block";
+                    errorMsg.textContent = "No se pudo obtener la información del usuario.";
+                });
         } else {
-            document.getElementById("username").textContent = "No se encontró el usuario.";
+            usernameElement.textContent = "Usuario no especificado.";
+            loadingIndicator.style.display = "none";
         }
     </script>
 </body>
