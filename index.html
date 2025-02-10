@@ -13,44 +13,55 @@
             height: 100vh;
             margin: 0;
             text-align: center;
-            font-family: Arial, sans-serif;
+            position: relative;
         }
 
-        /* Estilo para la lista */
-        #user-list {
-            list-style-type: none;
-            padding: 0;
-            margin: 20px 0;
+        #user-container {
+            background-color: lightgray;
+            padding: 15px;
+            border-radius: 10px;
+            width: 80%;
+            max-width: 400px;
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
         }
 
-        #user-list li {
-            margin: 10px 0;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            width: 200px;
-            text-align: left;
+        .user-item {
             display: flex;
             justify-content: space-between;
             align-items: center;
+            margin: 5px 0;
         }
 
-        #user-list a {
+        .user-item input {
+            width: 60%;
+        }
+
+        .user-item a {
             text-decoration: none;
-            color: #007BFF;
+            color: blue;
         }
 
-        #user-list a:hover {
-            text-decoration: underline;
-        }
-
-        .editable {
+        .save-btn {
+            margin-top: 10px;
+            padding: 5px 10px;
             cursor: pointer;
-            color: #28a745;
+            background-color: green;
+            color: white;
+            border: none;
+            border-radius: 5px;
         }
 
-        .editable:hover {
-            text-decoration: underline;
+        .first-paragraph {
+            color: blue;
+            font-size: 20px;
+        }
+
+        .second-paragraph {
+            color: green;
+            font-size: 24px;
+            font-weight: bold;
         }
     </style>
 </head>
@@ -58,47 +69,135 @@
     <h1>MAGIC</h1>
     <h2>Listas mazos</h2>
     <p class="first-paragraph">Ingresar mazo.</p>
-    <p class="second-paragraph">prueba</p>
-    <ul id="user-list"></ul>
+    <p class="second-paragraph">detalles</p>
+    
+    <!-- Formulario de inicio de sesión -->
+    <div id="login-container">
+        <h3>Iniciar Sesión</h3>
+        <input type="text" id="username" placeholder="Nombre de usuario">
+        <button onclick="iniciarSesion()">Iniciar Sesión</button>
+    </div>
 
-    <!-- Enlace al nuevo repositorio -->
-    <a href="https://<da5nx>.github.io/prueba/" target="_blank">Ir al repositorio de mazos</a>
+    <!-- Contenedor de usuarios (oculto inicialmente) -->
+    <div id="user-container" style="display: none;">
+        <h3>Usuarios de GitHub</h3>
+        <ul id="user-list"></ul>
+        <button class="save-btn" onclick="guardarCambios()">Guardar Cambios</button>
+    </div>
 
     <script>
-        // Cargar la lista de usuarios desde la API
-        fetch("https://api.github.com/users")
-            .then(response => response.json())
-            .then(data => {
-                let userList = document.getElementById("user-list");
-                data.forEach(user => {
-                    let li = document.createElement("li");
+        // Datos de usuarios que han iniciado sesión
+        let usuariosRegistrados = [];
+        let usuarioActual = null;
 
-                    // Crear enlace
-                    let link = document.createElement("a");
-                    link.href = `prueba.html?user=${user.login}`; // Enlace con el nombre del usuario
-                    link.textContent = user.login;
+        // Función para simular inicio de sesión
+        function iniciarSesion() {
+            const username = document.getElementById("username").value;
+            if (username) {
+                usuarioActual = username;
+                alert(`Bienvenido, ${username}!`);
+                document.getElementById("login-container").style.display = "none";
+                document.getElementById("user-container").style.display = "block";
+                cargarUsuariosGitHub();
+            } else {
+                alert("Por favor, ingresa un nombre de usuario.");
+            }
+        }
 
-                    // Crear botón para editar
-                    let editButton = document.createElement("span");
-                    editButton.textContent = " ✏️"; // Icono de lápiz
-                    editButton.className = "editable";
-                    editButton.onclick = () => editItem(li);
+        // Función para cargar usuarios de GitHub
+        function cargarUsuariosGitHub() {
+            fetch("https://api.github.com/users")
+                .then(response => response.json())
+                .then(data => {
+                    let userList = document.getElementById("user-list");
+                    let numUsuarios = 5; // Cambia este valor para mostrar más o menos usuarios
+                    data.slice(0, numUsuarios).forEach(user => {
+                        let li = document.createElement("li");
+                        li.classList.add("user-item");
+                        
+                        let input = document.createElement("input");
+                        input.type = "text";
+                        input.value = user.login;
+                        
+                        let link = document.createElement("a");
+                        link.href = `detalles.html?user=${encodeURIComponent(user.login)}`;
+                        link.textContent = "Ver detalles";
+                        link.style.display = "block";
+                        
+                        li.appendChild(input);
+                        li.appendChild(document.createElement("br"));
+                        li.appendChild(link);
+                        
+                        userList.appendChild(li);
+                    });
+                })
+                .catch(error => console.error("Error al cargar usuarios:", error));
+        }
 
-                    // Agregar elementos al li
-                    li.appendChild(link);
-                    li.appendChild(editButton);
-                    userList.appendChild(li);
-                });
+        // Función para guardar cambios en GitHub
+        async function guardarCambios() {
+            if (!usuarioActual) {
+                alert("Debes iniciar sesión para guardar cambios.");
+                return;
+            }
+
+            const token = 'TU_TOKEN_DE_ACCESO_PERSONAL'; // Reemplaza con tu token
+            const repo = 'TU_USUARIO/TU_REPOSITORIO'; // Reemplaza con tu usuario y repositorio
+            const rutaArchivo = 'usuarios.json'; // Ruta del archivo en el repositorio
+            const url = `https://api.github.com/repos/${repo}/contents/${rutaArchivo}`;
+
+            // Obtener los valores actualizados de los inputs
+            let inputs = document.querySelectorAll("#user-list input");
+            let usuariosEditados = [];
+            inputs.forEach(input => {
+                usuariosEditados.push({ username: input.value });
             });
 
-        // Función para editar un elemento de la lista
-        function editItem(li) {
-            let currentText = li.firstChild.textContent; // Obtener el texto actual
-            let newText = prompt("Editar nombre:", currentText); // Pedir nuevo texto
+            // Agregar el usuario actual a la lista de usuarios registrados
+            usuariosRegistrados.push({ usuario: usuarioActual, fecha: new Date().toISOString() });
 
-            if (newText !== null && newText.trim() !== "") {
-                li.firstChild.textContent = newText; // Actualizar el texto
+            // Convertir datos a JSON
+            const contenido = JSON.stringify(usuariosRegistrados, null, 2);
+            const contenidoCodificado = btoa(contenido); // Codificar en base64
+
+            // Obtener el SHA del archivo actual (si existe)
+            let sha;
+            try {
+                const response = await fetch(url, {
+                    headers: {
+                        Authorization: `token ${token}`
+                    }
+                });
+                const data = await response.json();
+                sha = data.sha; // SHA del archivo actual
+            } catch (error) {
+                console.log('El archivo no existe, se creará uno nuevo.');
             }
+
+            // Subir el archivo
+            const body = {
+                message: "Actualización de usuarios registrados",
+                content: contenidoCodificado,
+                sha: sha
+            };
+
+            fetch(url, {
+                method: 'PUT',
+                headers: {
+                    Authorization: `token ${token}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(body)
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Datos guardados correctamente:', data);
+                alert('Cambios guardados en GitHub.');
+            })
+            .catch(error => {
+                console.error('Error al guardar los datos:', error);
+                alert('Error al guardar los cambios.');
+            });
         }
     </script>
 </body>
