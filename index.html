@@ -82,9 +82,24 @@
     <h2>Datos Guardados</h2>
     <button class="nav-btn" onclick="window.location.href='datos.html'">Ver Datos Guardados</button>
 
+    <script src="https://apis.google.com/js/api.js"></script>
     <script>
         const SHEET_ID = '1MpbzGootI5Miphba0rhnDaGD0SH17zPzm_TMoN_tzo0'; // ID de la hoja de cálculo
         const SHEET_NAME = 'Hoja 4'; // Nombre de la pestaña en Google Sheets
+
+        // Credenciales de la Cuenta de Servicio (¡NO ES SEGURO EN ENTORNOS PÚBLICOS!)
+        const SERVICE_ACCOUNT_CREDENTIALS = {
+            "type": "service_account",
+            "project_id": "TU_PROJECT_ID",
+            "private_key_id": "TU_PRIVATE_KEY_ID",
+            "private_key": "-----BEGIN PRIVATE KEY-----\nTU_PRIVATE_KEY\n-----END PRIVATE KEY-----\n",
+            "client_email": "magic-308@magic1-450520.iam.gserviceaccount.com",
+            "client_id": "683037734653-gf8bhehfb6ed52bh4j0mp43g9qmmni27.apps.googleusercontent.com",
+            "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+            "token_uri": "https://oauth2.googleapis.com/token",
+            "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+            "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/TU_CLIENT_EMAIL"
+        };108594730739509228059
 
         async function guardarDatos() {
             const deck = document.getElementById('deck').value;
@@ -96,22 +111,32 @@
 
             if (dueño && deck && creador && de_precon && modificado && clase) {
                 try {
-                    // Enviar los datos al backend
-                    const response = await fetch('http://localhost:3000/guardar-datos', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify({
-                            sheetId: SHEET_ID,
-                            sheetName: SHEET_NAME,
-                            datos: [dueño, deck, creador, de_precon, modificado, clase],
-                        }),
+                    // Autenticación con la Cuenta de Servicio
+                    const auth = await gapi.auth2.getAuthInstance().signIn({
+                        client_id: SERVICE_ACCOUNT_CREDENTIALS.client_id,
+                        scope: 'https://www.googleapis.com/auth/spreadsheets',
                     });
 
-                    if (!response.ok) {
-                        throw new Error('Error al guardar datos.');
-                    }
+                    const sheets = gapi.client.sheets({ version: 'v4', auth });
+
+                    // Obtener la próxima fila vacía
+                    const response = await sheets.spreadsheets.values.get({
+                        spreadsheetId: SHEET_ID,
+                        range: `${SHEET_NAME}!A10:A`,
+                    });
+
+                    const nextRow = response.data.values ? response.data.values.length + 10 : 10;
+                    const range = `${SHEET_NAME}!A${nextRow}:F${nextRow}`;
+
+                    // Guardar los datos
+                    await sheets.spreadsheets.values.update({
+                        spreadsheetId: SHEET_ID,
+                        range,
+                        valueInputOption: 'RAW',
+                        resource: {
+                            values: [[dueño, deck, creador, de_precon, modificado, clase]],
+                        },
+                    });
 
                     alert('Datos guardados correctamente.');
                     window.location.href = 'datos.html';
@@ -123,6 +148,20 @@
                 alert('Por favor, complete todos los campos.');
             }
         }
+
+        // Inicializar la API de Google
+        function init() {
+            gapi.client.init({
+                apiKey: 'AIzaSyDVXiprwpI7xTEGZYzJY7gSC3XyXTQJtrs',
+                clientId: SERVICE_ACCOUNT_CREDENTIALS.client_id,
+                discoveryDocs: ['https://sheets.googleapis.com/$discovery/rest?version=v4'],
+                scope: 'https://www.googleapis.com/auth/spreadsheets',
+            }).then(() => {
+                console.log('API de Google inicializada.');
+            });
+        }
+
+        gapi.load('client:auth2', init);
     </script>
 </body>
 </html>
