@@ -25,69 +25,69 @@
         th {
             background-color: #f2f2f2;
         }
-        /* Estilos para las celdas */
         .col-num { width: 20px; }
-        .col-dueno { width: 100px; }
-        .col-creador { width: 100px; }
+        .col-dueno, .col-creador, .col-clase, .col-colores, .col-nombre { width: 100px; }
         .col-mazo { width: 80px; }
-        .col-precon { width: 60px; }
-        .col-modificado { width: 60px; }
-        .col-clase { width: 100px; }
-        .col-colores { width: 100px; }
-        .col-nombre { width: 100px; }
-        .col-vacio1, .col-vacio2, .col-vacio3, .col-vacio4, .col-vacio5,
-        .col-vacio6, .col-vacio7, .col-vacio12 { width: 4px; }
-        .col-vacio8, .col-vacio9, .col-vacio10, .col-vacio11 { width: 100px; }
+        .col-precon, .col-modificado { width: 60px; }
+        .col-vacio { width: 4px; }
+        .col-vacio1, .col-vacio2, .col-vacio3, .col-vacio4, { width: 100px; }
         .nav-btn {
-            margin-top: 20px;
-            padding: 5px 10px;
+            margin: 20px auto;
+            padding: 10px 20px;
             cursor: pointer;
             background-color: blue;
             color: white;
             border: none;
             border-radius: 5px;
+            display: block;
+        }
+        .error-message {
+            color: red;
             text-align: center;
+            margin-top: 20px;
+        }
     </style>
 </head>
 <body>
     <h1>Datos Guardados</h1>
-    <table id="data-table">
-    <!-- Botón para volver a la página de ingreso de datos -->
     <button class="nav-btn" onclick="window.location.href='index.html'">Volver a Ingresar Datos</button>
+    <table id="data-table">
         <thead>
             <tr>
                 <th class="col-num">Nº</th>
-                <th class="col-vacio1"> </th>
+                <th class="col-vacio"> </th>
                 <th class="col-dueno">Dueño</th>
-                <th class="col-vacio2"> </th>
+                <th class="col-vacio"> </th>
                 <th class="col-creador">Creador</th>
-                <th class="col-vacio3"> </th>
+                <th class="col-vacio"> </th>
                 <th class="col-mazo">Mazo</th>
-                <th class="col-vacio4"> </th>
+                <th class="col-vacio"> </th>
                 <th class="col-precon">Precon</th>
-                <th class="col-vacio5"> </th>
+                <th class="col-vacio"> </th>
                 <th class="col-modificado">Modificado</th>
-                <th class="col-vacio6"> </th>
+                <th class="col-vacio"> </th>
                 <th class="col-clase">Clase</th>
-                <th class="col-vacio7"> </th>
-                <th class="col-vacio8"> </th>
-                <th class="col-vacio9"> </th>
+                <th class="col-vacio"> </th>
+                <th class="col-vacio1"> </th>
+                <th class="col-vacio2"> </th>
                 <th class="col-colores">Colores</th>
-                <th class="col-vacio10"> </th>
-                <th class="col-vacio11"> </th>
-                <th class="col-vacio12"> </th>
+                <th class="col-vacio3"> </th>
+                <th class="col-vacio4"> </th>
+                <th class="col-vacio"> </th>
                 <th class="col-nombre">Nombre</th>
+                <th class="col-vacio"> </th>
             </tr>
         </thead>
         <tbody>
             <!-- Los datos se cargarán aquí dinámicamente -->
         </tbody>
     </table>
+    <p class="error-message" id="error-message" style="display: none;"></p>
 
     <script>
-        const API_KEY = 'AIzaSyDVXiprwpI7xTEGZYzJY7gSC3XyXTQJtrs';  // Reemplaza con tu clave de API
-        const SHEET_ID = '1MpbzGootI5Miphba0rhnDaGD0SH17zPzm_TMoN_tzo0'; // ID de la hoja de cálculo
-        const SHEET_NAME = 'Hoja 4'; // Nombre de la pestaña en Google Sheets
+        const API_KEY = 'TU_API_KEY_SEGURA';  // Reemplaza con tu clave de API segura
+        const SHEET_ID = '1MpbzGootI5Miphba0rhnDaGD0SH17zPzm_TMoN_tzo0';
+        const SHEET_NAME = 'Hoja 4';
 
         function cargarDatos() {
             fetch(`https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${SHEET_NAME}?key=${API_KEY}`)
@@ -100,48 +100,40 @@
                 .then(data => {
                     const rows = data.values || [];
                     const tbody = document.querySelector('#data-table tbody');
-                    tbody.innerHTML = ''; // Limpiar la tabla antes de cargar nuevos datos
+                    tbody.innerHTML = '';
 
-                    rows.forEach((item, index) => {
-                        if (index === 0) return; // Saltar la primera fila (encabezados)
+                    if (rows.length <= 1) {
+                        mostrarError('No hay datos disponibles para mostrar.');
+                        return;
+                    }
+
+                    rows.slice(1).forEach((item, index) => {
                         const tr = document.createElement('tr');
-
-                        // Asignar clases a cada celda según su posición
                         item.forEach((cell, cellIndex) => {
                             const td = document.createElement('td');
-                            switch (cellIndex) {
-                                case 0: td.classList.add('col-num'); break;
-                                case 1: td.classList.add('col-vacio1'); break;
-                                case 2: td.classList.add('col-dueno'); break;
-                                case 3: td.classList.add('col-vacio2'); break;
-                                case 4: td.classList.add('col-creador'); break;
-                                case 5: td.classList.add('col-vacio3'); break;
-                                case 6: td.classList.add('col-mazo'); break;
-                                case 7: td.classList.add('col-vacio4'); break;
-                                case 8: td.classList.add('col-precon'); break;
-                                case 9: td.classList.add('col-vacio5'); break;
-                                case 10: td.classList.add('col-modificado'); break;
-                                case 11: td.classList.add('col-vacio6'); break;
-                                case 12: td.classList.add('col-clase'); break;
-                                case 13: td.classList.add('col-vacio7'); break;
-                                case 14: td.classList.add('col-vacio8'); break;
-                                case 15: td.classList.add('col-colores'); break;
-                                case 16: td.classList.add('col-vacio9'); break;
-                                case 17: td.classList.add('col-vacio10'); break;
-                                case 18: td.classList.add('col-vacio11'); break;
-                                case 19: td.classList.add('col-vacio12'); break;
-                                case 20: td.classList.add('col-nombre'); break;
-                            }
+                            td.classList.add(
+                                ['col-num', 'col-vacio', 'col-dueno', 'col-vacio', 'col-creador', 'col-vacio',
+                                'col-mazo', 'col-vacio', 'col-precon', 'col-vacio', 'col-modificado', 'col-vacio',
+                                'col-clase', 'col-vacio', 'col-vacio1', 'col-vacio2', 'col-colores', 'col-vacio3', 'col-vacio4', 'col-vacio', 'col-nombre'][cellIndex] || ''
+                            );
                             td.textContent = cell;
                             tr.appendChild(td);
                         });
                         tbody.appendChild(tr);
                     });
                 })
-                .catch(error => console.error('Error al cargar datos:', error));
+                .catch(error => {
+                    console.error('Error al cargar datos:', error);
+                    mostrarError('Hubo un problema al cargar los datos. Intenta de nuevo más tarde.');
+                });
         }
-        
-        // Cargar los datos cuando la página se cargue
+
+        function mostrarError(mensaje) {
+            const errorMessage = document.getElementById('error-message');
+            errorMessage.textContent = mensaje;
+            errorMessage.style.display = 'block';
+        }
+
         document.addEventListener('DOMContentLoaded', cargarDatos);
     </script>
 </body>
