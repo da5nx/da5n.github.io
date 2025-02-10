@@ -54,18 +54,39 @@
         <input type="text" id="de_precon" placeholder="Precon?">
         <input type="text" id="modificado" placeholder="Mazo modificado">
         <input type="text" id="clase" placeholder="Clase del mazo">
-        <button class="save-btn" onclick="guardarDatos()">Guardar Datos</button>
+        <button class="save-btn" onclick="iniciarAutenticacion()">Guardar Datos</button>
     </div>
 
     <!-- Botón para ir a la página de datos -->
     <button class="nav-btn" onclick="window.location.href='datos.html'">Ver Datos Guardados</button>
 
     <script>
-        const API_KEY = 'AIzaSyDVXiprwpI7xTEGZYzJY7gSC3XyXTQJtrs';  // Reemplaza con tu clave de API
+        const CLIENT_ID = '683037734653-gf8bhehfb6ed52bh4j0mp43g9qmmni27.apps.googleusercontent.com'; // Reemplaza con tu Client ID
+        const API_KEY = 'AIzaSyDVXiprwpI7xTEGZYzJY7gSC3XyXTQJtrs';  // Clave de API (solo para lectura)
         const SHEET_ID = '1MpbzGootI5Miphba0rhnDaGD0SH17zPzm_TMoN_tzo0'; // ID de la hoja de cálculo
         const SHEET_NAME = 'Hoja 4'; // Nombre de la pestaña en Google Sheets
 
-        async function guardarDatos() {
+        // Iniciar autenticación OAuth 2.0
+        function iniciarAutenticacion() {
+            const oauth2Endpoint = 'https://accounts.google.com/o/oauth2/v2/auth';
+            const redirectUri = 'http://localhost:5500'; // Cambia si es necesario
+            const scope = 'https://www.googleapis.com/auth/spreadsheets';
+
+            const params = {
+                client_id: CLIENT_ID,
+                redirect_uri: redirectUri,
+                response_type: 'token',
+                scope: scope,
+                include_granted_scopes: 'true',
+                state: 'try_sample_request'
+            };
+
+            const url = oauth2Endpoint + '?' + new URLSearchParams(params).toString();
+            window.location.href = url;
+        }
+
+        // Guardar datos después de la autenticación
+        async function guardarDatos(accessToken) {
             const deck = document.getElementById('deck').value;
             const dueño = document.getElementById('dueño').value;
             const creador = document.getElementById('creador').value;
@@ -90,9 +111,12 @@
                     const datos = [dueño, deck, creador, de_precon, modificado, clase];
 
                     // Guardar los datos en las columnas específicas
-                    const updateResponse = await fetch(`https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${range}?valueInputOption=RAW&key=${API_KEY}`, {
+                    const updateResponse = await fetch(`https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${range}?valueInputOption=RAW`, {
                         method: 'PUT',
-                        headers: { 'Content-Type': 'application/json' },
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${accessToken}`
+                        },
                         body: JSON.stringify({ values: [datos] })
                     });
 
@@ -111,6 +135,20 @@
                 alert('Por favor, complete todos los campos.');
             }
         }
+
+        // Verificar si hay un token de acceso en la URL después de la autenticación
+        function verificarToken() {
+            const hash = window.location.hash.substring(1);
+            const params = new URLSearchParams(hash);
+            const accessToken = params.get('access_token');
+
+            if (accessToken) {
+                guardarDatos(accessToken);
+            }
+        }
+
+        // Verificar el token al cargar la página
+        window.addEventListener('load', verificarToken);
     </script>
 </body>
 </html>
