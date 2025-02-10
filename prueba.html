@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalles del Usuario</title>
+</head>
+<body>
+    <h1>Repositorios de GitHub</h1>
+    <h2 id="username"></h2>
+    <ul id="repos-list"></ul>
+
+    <script>
+        // Obtener el nombre de usuario de la URL
+        const params = new URLSearchParams(window.location.search);
+        const username = params.get("user");
+
+        if (username) {
+            document.getElementById("username").textContent = `Repos de ${username}`;
+
+            fetch(`https://api.github.com/users/${username}/repos`)
+                .then(response => response.json())
+                .then(repos => {
+                    let reposList = document.getElementById("repos-list");
+
+                    repos.forEach(repo => {
+                        let li = document.createElement("li");
+                        let link = document.createElement("a");
+                        link.href = repo.html_url;
+                        link.textContent = repo.name;
+                        link.target = "_blank";
+
+                        li.appendChild(link);
+                        reposList.appendChild(li);
+                    });
+                })
+                .catch(error => console.error("Error al cargar repositorios:", error));
+        } else {
+            document.getElementById("username").textContent = "No se encontró el usuario.";
+        }
+    </script>
+</body>
+</html>
