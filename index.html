@@ -85,44 +85,37 @@
     <script src="https://apis.google.com/js/api.js"></script>
     <script>
         const CLIENT_ID = '108594730739509228059'; // Reemplaza con tu Client ID
-        const REDIRECT_URI = 'https://da5nx.github.io/da5n.github.io/index.html'; // Asegúrate de que coincida con la registrada
+        const API_KEY = 'AIzaSyDVXiprwpI7xTEGZYzJY7gSC3XyXTQJtrs'; // Clave de API
         const SHEET_ID = '1MpbzGootI5Miphba0rhnDaGD0SH17zPzm_TMoN_tzo0'; // ID de la hoja de cálculo
         const SHEET_NAME = 'Hoja 4'; // Nombre de la pestaña en Google Sheets
 
-        // Credenciales de la Cuenta de Servicio (¡NO ES SEGURO EN ENTORNOS PÚBLICOS!)
-        const SERVICE_ACCOUNT_CREDENTIALS = {
-            "type": "service_account",
-            "project_id": "magic1-450520",
-            "private_key_id": "dac16a4fac0ea59c02f197d620425234de9c5402",
-            "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQCoYAO1ID+ifJzD\nL2NMBihjiu9Nc49+IDBTKXAR2O9XFFL66PIl+NPhe7j+blEK/5W6q+Ms6SzYc4iS\nrJpRhB1VBkHf0vJ9TPOqHtAwrgg62w5Ula7baZTJ+gWN9mGmc0T27mlyPS7yOila\ns7GZzOU24f8qfJMqWJo2d3KUxWeDNHGtG/uuyNjuSzmIBeV+gWnRQ8wIgnPhXGVK\nvbfvtRJi3EFV3dUjkXFyyiSOU9L7KWqstvFFZLqk+xAQv1XiOpbzISgQ25EdF3Em\nanxPYAYiVcUuYkPGD3oqKtGxm5yqA6T8R5crjJq3z6j0AjJdPc7FPN81B5MbE5Mc\n+Zer3h1tAgMBAAECggEAB5dam3AyhkYlgDRS/wK5D/Hb46tN4SMc4qb330ofUlb/\nfcICZt1e2ifsmYYKP9txmfq1cZkqtTCSTACdrYauFt8DGc8GMUmGo9kjTEqQYuzs\n6rnb6hcKxwdveCzPTsScK6DonqatBu1B343B+FvxSqXqTfVTYkGf5ExC3Xu/9L2W\nGMOHTye5afDttTTGdS82SkagBQPILZL/LWvl55JQUHrlfujoC+Al1L8RB88G3vNl\nxHFmxGCYJuKuJQH2SPowkuPmTiW05o7PTihcmeHLDhKCrQWN5K8pcaEnPXb2pjAH\n+I36m/E3Xz1DKCkeL5v25lMEhdsMuF58U9dozilr+QKBgQDREggXQ1XIWekEyhBK\neFuDQL1ljVRJUUfP7WM1FZvgQAtF8wl6W0SI+ZooUdpvJ33GsM/0liadONraEKRP\n72WwAuNPZZr4K7d4yK71ahYAY8sF6sThll1JEC3Ieh24LSt2kOS04jxxnE22ps+z\nwDV30r2a7Wdia4DC2KI9f2uIqQKBgQDOK3ltnsJbLyL3q7OSUfcS51iFOe+S3k0j\nPrg/y4ut1SsiFnFqVOEAZS60fMGWxe+4iBJJ9w7DeFA0/N51Q8cDerz5Tns6HSzH\nF6XYL7NWyUIOYq1Pn+l1BhiZT49iTDlFAONg9gufZZLDgDnk2cwwXgvgEdv3HthN\ntxjkxSGVJQKBgGg9eVM/+3FdgtUkemLnB5m1mbkccj3sDMYbMi+xinqQ9A34U21y\nPAWfjcE0rphlNEzws37brn0Nb/DyAzrnvee4SOW5Xz8FbQEH7lPmhPnEx+E3YNqp\nQfG/41PlrxO5UcZYD/AwLLrol8bN/Rk+aGpJ5MduPvHPb++2W44WDeOhAoGAdsmV\nrRNL6D3AZ/MGA8g2Ey44UoqO/pAW4bfBcQBV+lJYB8vmjN1axl+GCXfYEob5F9lO\nsE8osncfv2fyxJ3IjLirKPmPBmzI3+1AIM9bBSXwaVlxge8hE8vvYGX2tywz0w4v\n9C3PhIeBiCLZOIJEo5mMPg4MLtYWyrA0J5ttPgECgYBDFde65+O5Tl4j5ItwsLzX\nstKo00kdR+alGzBUiD8Ht2mYD/Wrz0k6xx5GAg9bXZ69sFsYH+qzjjliA8K4XR+f\ns2LqUQaoq60vhKqCxVs0iJx2prROe7BbrW6k6JMvivVxaYiMQa4kLWvGWvZsRn1v\nnGEPdVWe48qNZIylZi89Fw==\n-----END PRIVATE KEY-----\n",
-            "client_email": "magic-308@magic1-450520.iam.gserviceaccount.com",
-            "client_id": "108594730739509228059",
-            "auth_uri": "https://accounts.google.com/o/oauth2/auth",
-            "token_uri": "https://oauth2.googleapis.com/token",
-            "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
-            "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/magic-308%40magic1-450520.iam.gserviceaccount.com"
-        };
+        let gapiInitialized = false;
 
-        // Iniciar autenticación OAuth 2.0
-        function iniciarAutenticacion() {
-            const oauth2Endpoint = 'https://accounts.google.com/o/oauth2/v2/auth';
-            const scope = 'https://www.googleapis.com/auth/spreadsheets';
-
-            const params = {
-                client_id: CLIENT_ID,
-                redirect_uri: REDIRECT_URI,
-                response_type: 'token',
-                scope: scope,
-                include_granted_scopes: 'true',
-                state: 'try_sample_request'
-            };
-
-            const url = oauth2Endpoint + '?' + new URLSearchParams(params).toString();
-            window.location.href = url;
+        // Inicializar la API de Google
+        function initGapi() {
+            gapi.client.init({
+                apiKey: API_KEY,
+                discoveryDocs: ['https://sheets.googleapis.com/$discovery/rest?version=v4'],
+            }).then(() => {
+                gapiInitialized = true;
+                console.log('API de Google inicializada.');
+            }).catch((error) => {
+                console.error('Error al inicializar la API de Google:', error);
+            });
         }
 
-        // Guardar datos usando la Cuenta de Servicio
+        // Cargar la API de Google
+        function loadGapi() {
+            gapi.load('client', initGapi);
+        }
+
+        // Guardar datos en Google Sheets
         async function guardarDatos() {
+            if (!gapiInitialized) {
+                alert('La API de Google no se ha inicializado correctamente.');
+                return;
+            }
+
             const deck = document.getElementById('deck').value;
             const dueño = document.getElementById('dueño').value;
             const creador = document.getElementById('creador').value;
@@ -132,37 +125,32 @@
 
             if (dueño && deck && creador && de_precon && modificado && clase) {
                 try {
-                    // Autenticación con la Cuenta de Servicio
-                    const auth = await gapi.auth2.getAuthInstance().signIn({
-                        client_id: SERVICE_ACCOUNT_CREDENTIALS.client_id,
-                        scope: 'https://www.googleapis.com/auth/spreadsheets',
-                    });
-
-                    const sheets = gapi.client.sheets({ version: 'v4', auth });
-
                     // Obtener la próxima fila vacía
-                    const response = await sheets.spreadsheets.values.get({
+                    const response = await gapi.client.sheets.spreadsheets.values.get({
                         spreadsheetId: SHEET_ID,
                         range: `${SHEET_NAME}!A10:A`,
                     });
 
-                    const nextRow = response.data.values ? response.data.values.length + 10 : 10;
+                    const nextRow = response.result.values ? response.result.values.length + 10 : 10;
                     const range = `${SHEET_NAME}!A${nextRow}:F${nextRow}`;
 
+                    // Datos a guardar
+                    const datos = [dueño, deck, creador, de_precon, modificado, clase];
+
                     // Guardar los datos
-                    await sheets.spreadsheets.values.update({
+                    await gapi.client.sheets.spreadsheets.values.update({
                         spreadsheetId: SHEET_ID,
                         range,
                         valueInputOption: 'RAW',
                         resource: {
-                            values: [[dueño, deck, creador, de_precon, modificado, clase]],
+                            values: [datos],
                         },
                     });
 
                     alert('Datos guardados correctamente.');
                     window.location.href = 'datos.html';
                 } catch (error) {
-                    console.error('Error:', error);
+                    console.error('Error al guardar datos:', error);
                     alert('Hubo un error al guardar los datos. Verifica la consola para más detalles.');
                 }
             } else {
@@ -170,19 +158,8 @@
             }
         }
 
-        // Inicializar la API de Google
-        function init() {
-            gapi.client.init({
-                apiKey: 'AIzaSyDVXiprwpI7xTEGZYzJY7gSC3XyXTQJtrs',
-                clientId: SERVICE_ACCOUNT_CREDENTIALS.client_id,
-                discoveryDocs: ['https://sheets.googleapis.com/$discovery/rest?version=v4'],
-                scope: 'https://www.googleapis.com/auth/spreadsheets',
-            }).then(() => {
-                console.log('API de Google inicializada.');
-            });
-        }
-
-        gapi.load('client:auth2', init);
+        // Cargar la API de Google al iniciar la página
+        window.onload = loadGapi;
     </script>
 </body>
 </html>
