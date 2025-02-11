@@ -53,10 +53,10 @@
     <h2>Ingresa el mazo</h2> 
 
     <!-- Botón para redirigir al Formulario de Google -->
-    <button class="btn form-btn" onclick="redirigirFormulario()">Ingresar Datos en Google Form</button>
+    <button class="btn form-btn" onclick="redirigirFormulario()">Ingresar Datos en Google Form (1)</button>
 
     <!-- Botón para mostrar el formulario incrustado -->
-    <button class="btn embed-btn" onclick="mostrarFormulario()">Ingresar Datos en esta Página</button>
+    <button class="btn embed-btn" onclick="mostrarFormulario()">Ingresar Datos en esta Página (2)</button>
 
     <!-- Contenedor para el formulario incrustado -->
     <div id="form-embed" style="display: none;">
@@ -67,7 +67,7 @@
     <button class="btn nav-btn" onclick="window.location.href='datos.html'">Ver Datos Guardados</button>
 
     <script>
-        const FORM_URL = 'https://docs.google.com/forms/d/13NSbSvG8fOsbuLTScUOZRJqi-IFdG_kxJo3Pdc_54aQ/viewform';  // Reemplaza TU_FORM_ID con el ID real del formulario
+        const FORM_URL = 'https://docs.google.com/forms/d/13NSbSvG8fOsbuLTScUOZRJqi-IFdG_kxJo3Pdc_54aQ/viewform';
 
         function redirigirFormulario() {
             window.location.href = FORM_URL;
