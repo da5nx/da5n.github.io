@@ -61,11 +61,10 @@
     </style>
 </head>
 <body>
-    <h1>Magic</h1>
-    <button class="login-btn" onclick="signIn()">Iniciar Sesión con Google</button>
-
-    <h2>Ingresa el mazo</h2>
-    <div id="data-container">
+    <h1>Magic</h1> 
+    <h2>Ingresa el mazo</h2> 
+    <p class="first-paragraph">Ingresar mazo.</p>
+    <div id="data-container" style="display: grid; grid-template-columns: 1fr 2fr; gap: 10px; align-items: center;">
         <label for="deck">Nombre del mazo</label>
         <input type="text" id="deck" placeholder="Nombre del mazo">
 
@@ -84,6 +83,7 @@
         <label for="clase">Clase del mazo</label>
         <input type="text" id="clase" placeholder="Clase del mazo">
 
+        <div></div> <!-- Espacio en blanco para alinear el botón -->
         <button class="save-btn" onclick="guardarDatos()">Guardar Datos</button>
     </div>
 
