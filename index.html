@@ -23,136 +23,61 @@
             max-width: 400px;
         }
 
-        .save-btn, .nav-btn, .login-btn {
+        .btn {
             margin-top: 10px;
             padding: 10px;
             cursor: pointer;
             border: none;
             border-radius: 5px;
             transition: background-color 0.3s ease;
-        }
-
-        .save-btn {
-            background-color: green;
             color: white;
         }
 
-        .save-btn:hover {
-            background-color: darkgreen;
-        }
+        .nav-btn { background-color: blue; }
+        .nav-btn:hover { background-color: darkblue; }
 
-        .nav-btn {
-            background-color: blue;
-            color: white;
-        }
+        .form-btn { background-color: green; }
+        .form-btn:hover { background-color: darkgreen; }
 
-        .nav-btn:hover {
-            background-color: darkblue;
-        }
+        .embed-btn { background-color: purple; }
+        .embed-btn:hover { background-color: darkmagenta; }
 
-        .login-btn {
-            background-color: #4285F4;
-            color: white;
-        }
-
-        .login-btn:hover {
-            background-color: #3367D6;
+        iframe {
+            border: none;
+            margin-top: 20px;
         }
     </style>
 </head>
 <body>
     <h1>Magic</h1> 
     <h2>Ingresa el mazo</h2> 
-    <p class="first-paragraph">Ingresar mazo.</p>
-    <div id="data-container" style="display: grid; grid-template-columns: 1fr 2fr; gap: 10px; align-items: center;">
-        <label for="deck">Nombre del mazo</label>
-        <input type="text" id="deck" placeholder="Nombre del mazo">
 
-        <label for="dueño">Dueño</label>
-        <input type="text" id="dueño" placeholder="Nombre del dueño">
+    <!-- Botón para redirigir al Formulario de Google -->
+    <button class="btn form-btn" onclick="redirigirFormulario()">Ingresar Datos en Google Form</button>
 
-        <label for="creador">Nombre del creador</label>
-        <input type="text" id="creador" placeholder="Nombre del creador">
+    <!-- Botón para mostrar el formulario incrustado -->
+    <button class="btn embed-btn" onclick="mostrarFormulario()">Ingresar Datos en esta Página</button>
 
-        <label for="de_precon">Precon?</label>
-        <input type="text" id="de_precon" placeholder="Precon?">
-
-        <label for="modificado">Mazo modificado</label>
-        <input type="text" id="modificado" placeholder="Mazo modificado">
-
-        <label for="clase">Clase del mazo</label>
-        <input type="text" id="clase" placeholder="Clase del mazo">
-
-        <div></div> <!-- Espacio en blanco para alinear el botón -->
-        <button class="save-btn" onclick="guardarDatos()">Guardar Datos</button>
+    <!-- Contenedor para el formulario incrustado -->
+    <div id="form-embed" style="display: none;">
+        <iframe id="google-form" src="" width="640" height="800">Cargando...</iframe>
     </div>
 
-    <h2>Datos Guardados</h2>
-    <button class="nav-btn" onclick="window.location.href='datos.html'">Ver Datos Guardados</button>
+    <!-- Botón para ver los datos guardados (hoja de cálculo o página de datos) -->
+    <button class="btn nav-btn" onclick="window.location.href='datos.html'">Ver Datos Guardados</button>
 
-    <script src="https://apis.google.com/js/api.js"></script>
     <script>
-     
-        function initGapi() {
-            gapi.load('client:auth2', () => {
-                gapi.client.init({
-                    apiKey: API_KEY,
-                    clientId: CLIENT_ID,
-                    scope: SCOPES,
-                    discoveryDocs: ['https://sheets.googleapis.com/$discovery/rest?version=v4']
-                }).then(() => {
-                    console.log('API de Google inicializada.');
-                });
-            });
+        const FORM_URL = 'https://docs.google.com/forms/d/13NSbSvG8fOsbuLTScUOZRJqi-IFdG_kxJo3Pdc_54aQ/viewform';  // Reemplaza TU_FORM_ID con el ID real del formulario
+
+        function redirigirFormulario() {
+            window.location.href = FORM_URL;
         }
 
-        function signIn() {
-            gapi.auth2.getAuthInstance().signIn().then(() => {
-                console.log('Usuario autenticado');
-            }).catch(error => {
-                console.error('Error de autenticación:', error);
-            });
+        function mostrarFormulario() {
+            const iframe = document.getElementById('google-form');
+            iframe.src = FORM_URL + '?embedded=true';
+            document.getElementById('form-embed').style.display = 'block';
         }
-
-        async function guardarDatos() {
-            const deck = document.getElementById('deck').value;
-            const dueño = document.getElementById('dueño').value;
-            const creador = document.getElementById('creador').value;
-            const de_precon = document.getElementById('de_precon').value;
-            const modificado = document.getElementById('modificado').value;
-            const clase = document.getElementById('clase').value;
-
-            if (dueño && deck && creador && de_precon && modificado && clase) {
-                try {
-                    const response = await gapi.client.sheets.spreadsheets.values.get({
-                        spreadsheetId: SHEET_ID,
-                        range: `${SHEET_NAME}!A:A`,
-                    });
-
-                    const nextRow = response.result.values ? response.result.values.length + 1 : 1;
-                    const range = `${SHEET_NAME}!A${nextRow}:F${nextRow}`;
-
-                    const datos = [dueño, deck, creador, de_precon, modificado, clase];
-
-                    await gapi.client.sheets.spreadsheets.values.update({
-                        spreadsheetId: SHEET_ID,
-                        range,
-                        valueInputOption: 'RAW',
-                        resource: { values: [datos] }
-                    });
-
-                    alert('Datos guardados correctamente.');
-                    window.location.href = 'datos.html';
-                } catch (error) {
-                    console.error('Error al guardar datos:', error);
-                    alert('Error al guardar datos. Verifica la consola.');
-                }
-            } else {
-                alert('Por favor, complete todos los campos.');
-            }
-        }
-
-        window.onload = initGapi;
     </script>
 </body>
 </html>
