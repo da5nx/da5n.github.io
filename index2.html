@@ -206,21 +206,18 @@
         }
 
         function mostrarFormulario() {
-            const iframe = document.getElementById('google-form');
-            iframe.src = FORM_URL + '?embedded=true';
-            document.getElementById('form-embed').style.display = 'block';
-        }
-
-        function mostrarFormularioInline() {
-            document.getElementById('inline-form').style.display = 'block';
-        }
-        function toggleFormulario(id) {
-            const form = document.getElementById(id);
-            if (form.style.display === 'block') {
-                form.style.display = 'none';
+            const formEmbed = document.getElementById('form-embed');
+            if (formEmbed.style.display === 'block') {
+                formEmbed.style.display = 'none'; // Oculta si ya está visible
             } else {
-                form.style.display = 'block';
+                document.getElementById('google-form').src = FORM_URL + '?embedded=true';
+                formEmbed.style.display = 'block';
             }
+        }
+        
+        function mostrarFormularioInline() {
+            const inlineForm = document.getElementById('inline-form');
+            inlineForm.style.display = inlineForm.style.display === 'block' ? 'none' : 'block';
         }
     </script>
 </body>
