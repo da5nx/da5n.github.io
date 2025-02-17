@@ -24,6 +24,11 @@
             padding: 10px 20px;
             width: 100%;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
         }
 
         .navbar-brand {
@@ -80,7 +85,10 @@
             width: 80%;
             max-width: 400px;
         }
-
+       /* Ajustar el contenido para que no se superponga con la barra */
+        main {
+            margin-top: 60px;
+        }
         .btn {
             margin-top: 10px;
             padding: 10px;
@@ -136,6 +144,7 @@
                 <span>PEREIRA.JS</span>
             </a>
             <ul class="navbar-menu">
+                <li><a href="https://da5nx.github.io/da5n.github.io/index2.html" class="highlight">.2</a></li>
                 <li><a href="#next-meet" class="highlight">Próxima Reunión.</a></li>
                 <li><a href="#objectives">Objetivos</a></li>
                 <li><a href="#evento">Evento</a></li>
@@ -205,6 +214,14 @@
 
         function mostrarFormularioInline() {
             document.getElementById('inline-form').style.display = 'block';
+        }
+        function toggleFormulario(id) {
+            const form = document.getElementById(id);
+            if (form.style.display === 'block') {
+                form.style.display = 'none';
+            } else {
+                form.style.display = 'block';
+            }
         }
     </script>
 </body>
