@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ingresar Datos</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            text-align: center;
+        }
+
+        /* Estilos para la barra superior */
+        .navbar-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background-color: #f8f8f8;
+            padding: 10px 20px;
+            width: 100%;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .navbar-brand {
+            display: flex;
+            align-items: center;
+            font-size: 18px;
+            font-weight: bold;
+            color: black;
+            text-decoration: none;
+        }
+
+        .navbar-brand img {
+            height: 24px;
+            margin-right: 8px;
+        }
+
+        .navbar-menu {
+            list-style: none;
+            display: flex;
+            padding: 0;
+            margin: 0;
+        }
+
+        .navbar-menu li {
+            margin: 0 10px;
+        }
+
+        .navbar-menu li a {
+            text-decoration: none;
+            color: black;
+            font-size: 14px;
+            padding: 5px 10px;
+        }
+
+        .navbar-menu li a:hover {
+            text-decoration: underline;
+        }
+
+        .highlight {
+            color: red;
+        }
+
+        .contact-highlight {
+            background-color: #e0e0e0;
+            padding: 5px 10px;
+            border-radius: 5px;
+        }
+
+        /* Manteniendo los estilos originales */
+        #data-container {
+            background-color: lightgray;
+            padding: 15px;
+            border-radius: 10px;
+            width: 80%;
+            max-width: 400px;
+        }
+
+        .btn {
+            margin-top: 10px;
+            padding: 10px;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+            color: white;
+        }
+
+        .nav-btn { background-color: blue; }
+        .nav-btn:hover { background-color: darkblue; }
+
+        .form-btn { background-color: green; }
+        .form-btn:hover { background-color: darkgreen; }
+
+        .embed-btn { background-color: purple; }
+        .embed-btn:hover { background-color: darkmagenta; }
+
+        .inline-btn { background-color: orange; }
+        .inline-btn:hover { background-color: darkorange; }
+
+        iframe {
+            border: none;
+            margin-top: 20px;
+        }
+
+        #inline-form {
+            display: none;
+            background-color: lightgray;
+            padding: 15px;
+            border-radius: 10px;
+            width: 80%;
+            max-width: 400px;
+        }
+
+        input {
+            width: 100%;
+            padding: 8px;
+            margin: 5px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Barra de Navegación -->
+    <nav>
+        <div class="navbar-container">
+            <a class="navbar-brand" href="#">
+                <img src="/images/LogoPeq.png" alt="Logo">
+                <span>PEREIRA.JS</span>
+            </a>
+            <ul class="navbar-menu">
+                <li><a href="#next-meet" class="highlight">Próxima Reunión.</a></li>
+                <li><a href="#objectives">Objetivos</a></li>
+                <li><a href="#evento">Evento</a></li>
+                <li><a href="#patrocinadores">Patrocinadores</a></li>
+                <li><a href="#team">Colaboradores</a></li>
+                <li><a href="#contact" class="contact-highlight">Contacto</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Contenido principal -->
+    <h1>Magic</h1> 
+    <h2>Ingresa el mazo</h2> 
+
+    <!-- Botón para redirigir al Formulario de Google -->
+    <button class="btn form-btn" onclick="redirigirFormulario()">Ingresar Datos en Google Form (1)</button>
+
+    <!-- Botón para mostrar el formulario incrustado -->
+    <button class="btn embed-btn" onclick="mostrarFormulario()">Ingresar Datos en esta Página (2)</button>
+
+    <!-- Contenedor para el formulario incrustado -->
+    <div id="form-embed" style="display: none;">
+        <iframe id="google-form" src="" width="640" height="800">Cargando...</iframe>
+    </div>
+
+    <!-- Botón para mostrar el formulario directamente en la página (3) -->
+    <button class="btn inline-btn" onclick="mostrarFormularioInline()">Ingresar Datos en esta Página (3)</button>
+
+    <!-- Formulario directamente en la página -->
+    <div id="inline-form">
+        <label for="deck">Nombre del mazo</label>
+        <input type="text" id="deck" placeholder="Nombre del mazo">
+
+        <label for="dueño">Dueño</label>
+        <input type="text" id="dueño" placeholder="Nombre del dueño">
+
+        <label for="creador">Nombre del creador</label>
+        <input type="text" id="creador" placeholder="Nombre del creador">
+
+        <label for="de_precon">Precon?</label>
+        <input type="text" id="de_precon" placeholder="Precon?">
+
+        <label for="modificado">Mazo modificado</label>
+        <input type="text" id="modificado" placeholder="Mazo modificado">
+
+        <label for="clase">Clase del mazo</label>
+        <input type="text" id="clase" placeholder="Clase del mazo">
+
+        <button class="btn form-btn" onclick="guardarDatos()">Guardar Datos</button>
+    </div>
+
+    <!-- Botón para ver los datos guardados -->
+    <button class="btn nav-btn" onclick="window.location.href='datos.html'">Ver Datos Guardados</button>
+
+    <script>
+        const FORM_URL = 'https://docs.google.com/forms/d/13NSbSvG8fOsbuLTScUOZRJqi-IFdG_kxJo3Pdc_54aQ/viewform';
+
+        function redirigirFormulario() {
+            window.location.href = FORM_URL;
+        }
+
+        function mostrarFormulario() {
+            const iframe = document.getElementById('google-form');
+            iframe.src = FORM_URL + '?embedded=true';
+            document.getElementById('form-embed').style.display = 'block';
+        }
+
+        function mostrarFormularioInline() {
+            document.getElementById('inline-form').style.display = 'block';
+        }
+    </script>
+</body>
+</html>
