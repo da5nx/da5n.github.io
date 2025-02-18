@@ -85,7 +85,7 @@
     <p class="error-message" id="error-message" style="display: none;"></p>
 
     <script>
-        const API_KEY = 'AIzaSyDVXiprwpI7xTEGZYzJY7gSC3XyXTQJtrs';  // Reemplaza con tu clave de API segura
+        const API_KEY = 'AIzaSyAnGGR0yPvdKPrGcVXkZXEMZQLSGeU7B4k';  // Reemplaza con tu clave de API segura
         const SHEET_ID = '1s0upi4f795BVvIQkiWwSnnB_zKU5qw5XAigyvqwzlYI';
         const SHEET_NAME = 'Hoja 4';
  
