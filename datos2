@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Datos Guardados</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        h1 {
+            text-align: center;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: center;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        .col-num { width: 20px; }
+        .col-dueno, .col-creador, .col-clase, .col-colores, .col-nombre { width: 100px; }
+        .col-mazo { width: 80px; }
+        .col-precon, .col-modificado { width: 60px; }
+        .col-vacio { width: 4px; }
+        .col-vacio1, .col-vacio2, .col-vacio3, .col-vacio4, { width: 100px; }
+        .nav-btn {
+            margin: 20px auto;
+            padding: 10px 20px;
+            cursor: pointer;
+            background-color: blue;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            display: block;
+        }
+        .error-message {
+            color: red;
+            text-align: center;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Datos Guardados</h1>
+    <button class="nav-btn" onclick="window.location.href='index2.html'">Volver a Ingresar Datos</button>
+    <table id="data-table">
+        <thead>
+            <tr>
+                <th class="col-num">Nº</th>
+                <th class="col-vacio"> </th>
+                <th class="col-dueno">Dueño</th>
+                <th class="col-vacio"> </th>
+                <th class="col-creador">Creador</th>
+                <th class="col-vacio"> </th>
+                <th class="col-mazo">Mazo</th>
+                <th class="col-vacio"> </th>
+                <th class="col-precon">Precon</th>
+                <th class="col-vacio"> </th>
+                <th class="col-modificado">Modificado</th>
+                <th class="col-vacio"> </th>
+                <th class="col-clase">Clase</th>
+                <th class="col-vacio"> </th>
+                <th class="col-vacio1"> </th>
+                <th class="col-vacio2"> </th>
+                <th class="col-colores">Colores</th>
+                <th class="col-vacio3"> </th>
+                <th class="col-vacio4"> </th>
+                <th class="col-vacio"> </th>
+                <th class="col-nombre">Nombre</th>
+                <th class="col-vacio"> </th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Los datos se cargarán aquí dinámicamente -->
+        </tbody>
+    </table>
+    <p class="error-message" id="error-message" style="display: none;"></p>
+
+    <script>
+        const API_KEY = 'AIzaSyDVXiprwpI7xTEGZYzJY7gSC3XyXTQJtrs';  // Reemplaza con tu clave de API segura
+        const SHEET_ID = '1s0upi4f795BVvIQkiWwSnnB_zKU5qw5XAigyvqwzlYI';
+        const SHEET_NAME = 'Hoja 4';
+ 
+        function cargarDatos() {
+            fetch(`https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${SHEET_NAME}?key=${API_KEY}`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Error en la solicitud: ' + response.statusText);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    const rows = data.values || [];
+                    const tbody = document.querySelector('#data-table tbody');
+                    tbody.innerHTML = '';
+
+                    if (rows.length <= 1) {
+                        mostrarError('No hay datos disponibles para mostrar.');
+                        return;
+                    }
+
+                    rows.slice(1).forEach((item, index) => {
+                        const tr = document.createElement('tr');
+                        item.forEach((cell, cellIndex) => {
+                            const td = document.createElement('td');
+                            td.classList.add(
+                                ['col-num', 'col-vacio', 'col-dueno', 'col-vacio', 'col-creador', 'col-vacio',
+                                'col-mazo', 'col-vacio', 'col-precon', 'col-vacio', 'col-modificado', 'col-vacio',
+                                'col-clase', 'col-vacio', 'col-vacio1', 'col-vacio2', 'col-colores', 'col-vacio3', 'col-vacio4', 'col-vacio', 'col-nombre'][cellIndex] || ''
+                            );
+                            td.textContent = cell;
+                            tr.appendChild(td);
+                        });
+                        tbody.appendChild(tr);
+                    });
+                })
+                .catch(error => {
+                    console.error('Error al cargar datos:', error);
+                    mostrarError('Hubo un problema al cargar los datos. Intenta de nuevo más tarde.');
+                });
+        }
+
+        function mostrarError(mensaje) {
+            const errorMessage = document.getElementById('error-message');
+            errorMessage.textContent = mensaje;
+            errorMessage.style.display = 'block';
+        }
+
+        document.addEventListener('DOMContentLoaded', cargarDatos);
+    </script>
+</body>
+</html>
