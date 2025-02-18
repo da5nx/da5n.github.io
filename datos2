@@ -90,7 +90,8 @@
         const SHEET_NAME = 'Hoja 4';
  
         function cargarDatos() {
-            fetch(`https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${SHEET_NAME}?key=${API_KEY}`)
+
+            fetch(`https://sheets.googleapis.com/v4/spreadsheets/{SHEET_ID}/values/{SHEET_NAME}?key={API_KEY}`)
                 .then(response => {
                     if (!response.ok) {
                         throw new Error('Error en la solicitud: ' + response.statusText);
