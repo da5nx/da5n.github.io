@@ -88,44 +88,44 @@
         const API_KEY = 'AIzaSyAnGGR0yPvdKPrGcVXkZXEMZQLSGeU7B4k';  // Reemplaza con tu clave de API segura
         const SHEET_ID = '1s0upi4f795BVvIQkiWwSnnB_zKU5qw5XAigyvqwzlYI';
         const SHEET_NAME = 'Hoja 4';
-
+        
         function cargarDatos() {
-            fetch(`https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${SHEET_NAME}?key=${API_KEY}`)
+            const url = `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${SHEET_NAME}?key=${API_KEY}`;
+            console.log("📌 URL de solicitud:", url);
+        
+            fetch(url)
                 .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Error en la solicitud: ' + response.statusText);
-                    }
+                    console.log("🔍 Estado de la respuesta:", response.status, response.statusText);
                     return response.json();
                 })
                 .then(data => {
-                    const rows = data.values || [];
-                    const tbody = document.querySelector('#data-table tbody');
-                    tbody.innerHTML = '';
-
-                    if (rows.length <= 1) {
-                        mostrarError('No hay datos disponibles para mostrar.');
+                    console.log("📊 Datos recibidos:", data);
+        
+                    if (!data.values || data.values.length <= 1) {
+                        mostrarError("⚠️ No hay datos disponibles para mostrar.");
                         return;
                     }
-
-                    rows.slice(1).forEach((item, index) => {
-                        const tr = document.createElement('tr');
-                        item.forEach((cell, cellIndex) => {
-                            const td = document.createElement('td');
+        
+                    const tbody = document.querySelector("#data-table tbody");
+                    tbody.innerHTML = "";
+        
+                    data.values.slice(1).forEach(row => {
+                        const tr = document.createElement("tr");
                             td.classList.add(
                                 ['col-num', 'col-vacio', 'col-dueno', 'col-vacio', 'col-creador', 'col-vacio',
                                 'col-mazo', 'col-vacio', 'col-precon', 'col-vacio', 'col-modificado', 'col-vacio',
                                 'col-clase', 'col-vacio', 'col-vacio1', 'col-vacio2', 'col-colores', 'col-vacio3', 'col-vacio4', 'col-vacio', 'col-nombre'][cellIndex] || ''
                             );
-                            td.textContent = cell;
-                            tr.appendChild(td);
-                        });
-                        tbody.appendChild(tr);
+                        td.textContent = cell;
+                        tr.appendChild(td);
                     });
-                })
-                .catch(error => {
-                    console.error('Error al cargar datos:', error);
-                    mostrarError('Hubo un problema al cargar los datos. Intenta de nuevo más tarde.');
+                    tbody.appendChild(tr);
                 });
+            })
+            .catch(error => {
+                console.error("❌ Error al cargar datos:", error);
+                mostrarError("🚨 Hubo un problema al cargar los datos. Intenta de nuevo más tarde.");
+            });
         }
 
         function mostrarError(mensaje) {
