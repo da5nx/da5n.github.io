@@ -242,21 +242,7 @@
             const inlineForm = document.getElementById('inline-form');
             inlineForm.style.display = inlineForm.style.display === 'block' ? 'none' : 'block';
         }
-                function guardarDatos() {
-            const deck = document.getElementById('deck').value;
-            const dueño = document.getElementById('dueño').value;
-            const creador = document.getElementById('creador').value;
-            const de_precon = document.getElementById('de_precon').value;
-            const modificado = document.getElementById('modificado').value;
-            const clase = document.getElementById('clase').value;
-
-            if (deck && dueño && creador && de_precon && modificado && clase) {
-                alert('Datos guardados localmente:\n' +
-                    Mazo: ${deck}\nDueño: ${dueño}\nCreador: ${creador}\nPrecon?: ${de_precon}\nModificado: ${modificado}\nClase: ${clase});
-            } else {
-                alert('Por favor, complete todos los campos.');
-            }
-        }
+   
     </script>
 </body>
 </html>
