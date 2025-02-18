@@ -151,21 +151,26 @@
         }
 
         function guardarDatos() {
-            const deck = document.getElementById('deck').value;
-            const dueño = document.getElementById('dueño').value;
-            const creador = document.getElementById('creador').value;
-            const de_precon = document.getElementById('de_precon').value;
-            const modificado = document.getElementById('modificado').value;
-            const clase = document.getElementById('clase').value;
-
+            const deck = document.getElementById('deck').value.trim();
+            const dueño = document.getElementById('dueño').value.trim();
+            const creador = document.getElementById('creador').value.trim();
+            const de_precon = document.getElementById('de_precon').value.trim();
+            const modificado = document.getElementById('modificado').value.trim();
+            const clase = document.getElementById('clase').value.trim();
+        
             if (deck && dueño && creador && de_precon && modificado && clase) {
-                alert('Datos guardados localmente:\n' +
-                    Mazo: ${deck}\nDueño: ${dueño}\nCreador: ${creador}\nPrecon?: ${de_precon}\nModificado: ${modificado}\nClase: ${clase});
-            } else {
-                alert('Por favor, complete todos los campos.');
-            }
-        }
-    </script>
+                alert(`Datos guardados localmente:\n
+                Mazo: ${deck}\n
+                Dueño: ${dueño}\n
+                Creador: ${creador}\n
+                Precon?: ${de_precon}\n
+                Modificado: ${modificado}\n
+                Clase: ${clase}`);
+    } else {
+        alert('Por favor, complete todos los campos.');
+    }
+}
+
 </body>
 </html>
 
