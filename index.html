@@ -151,10 +151,12 @@
         }
 
         function mostrarFormulario() {
-            const iframe = document.getElementById('google-form');
-            iframe.src = FORM_URL + '?embedded=true';
-            document.getElementById('form-embed').style.display = 'block';
-        }
+            const formEmbed = document.getElementById('form-embed');
+            if (formEmbed.style.display === 'block') {
+                formEmbed.style.display = 'none'; // Oculta si ya está visible
+            } else {
+                document.getElementById('google-form').src = FORM_URL + '?embedded=true';
+                formEmbed.style.display = 'block';
 
         function mostrarFormularioInline() {
             const inlineForm = document.getElementById('inline-form');
