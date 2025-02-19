@@ -99,6 +99,9 @@
     <!-- Botón para mostrar el formulario incrustado (2) -->
     <button class="btn embed-btn" onclick="mostrarFormulario()">Ingresar Datos en esta Página (2)</button>
 
+    <!-- Botón para mostrar el formulario incrustado (4) -->
+    <button class="btn embed-btn" onclick="mostrar5Formulario()">Ingresar Datos en esta Página (4)</button>
+    
     <!-- Contenedor para el formulario incrustado -->
     <div id="form-embed" style="display: none;">
         <iframe id="google-form" src="" width="640" height="800">Cargando...</iframe>
@@ -135,6 +138,15 @@
 
     <script>
         const FORM_URL = 'https://docs.google.com/forms/d/13NSbSvG8fOsbuLTScUOZRJqi-IFdG_kxJo3Pdc_54aQ/viewform';
+        const FORM_ACTION_URL = "https://docs.google.com/forms/d/e/TU_FORM_ACTION_ID/formResponse"; // Reemplaza con la URL real del formulario
+
+        // Reemplaza con los identificadores reales de cada campo
+        const ENTRY_DECK = "entry.1624728211";  
+        const ENTRY_DUENO = "entry.1061561435"; 
+        const ENTRY_CREADOR = "entry.192837465"; 
+        const ENTRY_PRECON = "entry.1118348865"; 
+        const ENTRY_MODIFICADO = "entry.257092737"; 
+        const ENTRY_CLASE = "entry.ñ"; 
 
         function redirigirFormulario() {
             window.location.href = FORM_URL;
@@ -147,7 +159,8 @@
         }
 
         function mostrarFormularioInline() {
-            document.getElementById('inline-form').style.display = 'block';
+            const inlineForm = document.getElementById('inline-form');
+            inlineForm.style.display = inlineForm.style.display === 'block' ? 'none' : 'block';
         }
 
         function guardarDatos() {
@@ -166,11 +179,23 @@
                 Precon?: ${de_precon}\n
                 Modificado: ${modificado}\n
                 Clase: ${clase}`);
-    } else {
-        alert('Por favor, complete todos los campos.');
-    }
-}
 
+              fetch(https://docs.google.com/forms/d/e/1FAIpQLSdjJ3zhRsTsDDu8_KdCwZjzvz3gYIvRFOfT1YuypQajZpuWzw/viewform, {
+                    method: "POST",
+                    body: formData,
+                    mode: "no-cors"
+                }).then(() => {
+                    alert("Datos enviados correctamente.");
+                    document.getElementById("inline-form").reset();
+                }).catch(error => {
+                    console.error("Error al enviar los datos:", error);
+                    alert("Hubo un error al enviar los datos.");
+                });
+            } else {
+                alert("Por favor, complete todos los campos.");
+            }
+        } 
+    <script>
 </body>
 </html>
 
