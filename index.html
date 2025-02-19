@@ -138,7 +138,7 @@
 
     <script>
         const FORM_URL = 'https://docs.google.com/forms/d/13NSbSvG8fOsbuLTScUOZRJqi-IFdG_kxJo3Pdc_54aQ/viewform';
-        const FORM_ACTION_URL = "https://docs.google.com/forms/d/e/TU_FORM_ACTION_ID/formResponse"; // Reemplaza con la URL real del formulario
+        const FORM_ACTION_URL = "https://docs.google.com/forms/d/e/1FAIpQLSdjJ3zhRsTsDDu8_KdCwZjzvz3gYIvRFOfT1YuypQajZpuWzw/viewform"; // Reemplaza con la URL real del formulario
 
         // Reemplaza con los identificadores reales de cada campo
         const ENTRY_DECK = "entry.1624728211";  
@@ -180,7 +180,7 @@
                 Modificado: ${modificado}\n
                 Clase: ${clase}`);
 
-              fetch(https://docs.google.com/forms/d/e/1FAIpQLSdjJ3zhRsTsDDu8_KdCwZjzvz3gYIvRFOfT1YuypQajZpuWzw/viewform, {
+              fetch(FORM_ACTION_URL, {
                     method: "POST",
                     body: formData,
                     mode: "no-cors"
