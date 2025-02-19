@@ -15,7 +15,6 @@
             text-align: center;
         }
 
-
         #data-container {
             background-color: lightgray;
             padding: 15px;
@@ -70,46 +69,27 @@
     </style>
 </head>
 <body>
-    <!-- Barra de Navegación -->
-    <nav>
-        <div class="navbar-container">
-            <a class="navbar-brand" href="#">
-                <img src="imagen/a" alt="Logo">
-                <span>PEREIRA.JS</span>
-            </a>
-            <ul class="navbar-menu">
-                <li><a href="https://da5nx.github.io/da5n.github.io/index2.html">.1</a></li>
-                <li><a href="#next-meet" style="color: red;">Próxima Reunión.</a></li>
-                <li><a href="#objectives">Objetivos</a></li>
-                <li><a href="#evento">Evento</a></li>
-                <li><a href="#patrocinadores">Patrocinadores</a></li>
-                <li><a href="#team">Colaboradores</a></li>
-                <li><a href="#contact" style="background-color: #f2f2f2;">Contacto</a></li>
-            </ul>
-        </div>
-    </nav>
 
-    <!-- Contenido principal -->
     <h1>Magic</h1> 
     <h2>Ingresa el mazo</h2> 
 
     <!-- Botón para redirigir al Formulario de Google (1) -->
     <button class="btn form-btn" onclick="redirigirFormulario()">Ingresar Datos en Google Form (1)</button>
 
-    <!-- Botón para mostrar el formulario incrustado (2) -->
+    <!-- Botón para redirigir al Formulario de Google (2) -->
     <button class="btn embed-btn" onclick="mostrarFormulario()">Ingresar Datos en esta Página (2)</button>
 
     <!-- Botón para mostrar el formulario incrustado (4) -->
     <button class="btn embed-btn" onclick="mostrar5Formulario()">Ingresar Datos en esta Página (4)</button>
     
+    <!-- Botón para redirigir al Formulario de Google (3) -->
+    <button class="btn inline-btn" onclick="mostrarFormularioInline()">Ingresar Datos en esta Página (3)</button>
+
     <!-- Contenedor para el formulario incrustado -->
     <div id="form-embed" style="display: none;">
         <iframe id="google-form" src="" width="640" height="800">Cargando...</iframe>
     </div>
-
-    <!-- Botón para mostrar el formulario directamente en la página (3) -->
-    <button class="btn inline-btn" onclick="mostrarFormularioInline()">Ingresar Datos en esta Página (3)</button>
-
+    
     <!-- Formulario directamente en la página -->
     <div id="inline-form">
         <label for="deck">Nombre del mazo</label>
@@ -138,15 +118,14 @@
 
     <script>
         const FORM_URL = 'https://docs.google.com/forms/d/13NSbSvG8fOsbuLTScUOZRJqi-IFdG_kxJo3Pdc_54aQ/viewform';
-        const FORM_ACTION_URL = "https://docs.google.com/forms/d/e/1FAIpQLSdjJ3zhRsTsDDu8_KdCwZjzvz3gYIvRFOfT1YuypQajZpuWzw/viewform"; // Reemplaza con la URL real del formulario
+        const FORM_ACTION_URL = "https://docs.google.com/forms/d/e/1FAIpQLSdjJ3zhRsTsDDu8_KdCwZjzvz3gYIvRFOfT1YuypQajZpuWzw/formResponse"; 
 
-        // Reemplaza con los identificadores reales de cada campo
         const ENTRY_DECK = "entry.1624728211";  
         const ENTRY_DUENO = "entry.1061561435"; 
         const ENTRY_CREADOR = "entry.192837465"; 
         const ENTRY_PRECON = "entry.1118348865"; 
         const ENTRY_MODIFICADO = "entry.257092737"; 
-        const ENTRY_CLASE = "entry.ñ"; 
+        const ENTRY_CLASE = "entry.123456789"; 
 
         function redirigirFormulario() {
             window.location.href = FORM_URL;
@@ -162,7 +141,11 @@
             const inlineForm = document.getElementById('inline-form');
             inlineForm.style.display = inlineForm.style.display === 'block' ? 'none' : 'block';
         }
-
+        
+        function mostrar5Formulario() {
+            console.log("Función mostrar5Formulario() aún no implementada.");
+            alert("Esta función se implementará más adelante.");
+        }
         function guardarDatos() {
             const deck = document.getElementById('deck').value.trim();
             const dueño = document.getElementById('dueño').value.trim();
@@ -172,15 +155,15 @@
             const clase = document.getElementById('clase').value.trim();
         
             if (deck && dueño && creador && de_precon && modificado && clase) {
-                alert(`Datos guardados localmente:\n
-                Mazo: ${deck}\n
-                Dueño: ${dueño}\n
-                Creador: ${creador}\n
-                Precon?: ${de_precon}\n
-                Modificado: ${modificado}\n
-                Clase: ${clase}`);
+                const formData = new FormData();
+                formData.append(ENTRY_DECK, deck);
+                formData.append(ENTRY_DUENO, dueño);
+                formData.append(ENTRY_CREADOR, creador);
+                formData.append(ENTRY_PRECON, de_precon);
+                formData.append(ENTRY_MODIFICADO, modificado);
+                formData.append(ENTRY_CLASE, clase);
 
-              fetch(FORM_ACTION_URL, {
+                fetch(FORM_ACTION_URL, {
                     method: "POST",
                     body: formData,
                     mode: "no-cors"
@@ -188,14 +171,14 @@
                     alert("Datos enviados correctamente.");
                     document.getElementById("inline-form").reset();
                 }).catch(error => {
-                    console.error("Error al enviar los datos:", error);
                     alert("Hubo un error al enviar los datos.");
+                    console.error(error);
                 });
             } else {
                 alert("Por favor, complete todos los campos.");
             }
         } 
-    <script>
+    </script>
 </body>
 </html>
 
