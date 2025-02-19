@@ -14,7 +14,68 @@
             margin: 0;
             text-align: center;
         }
+        /* Barra de navegación en vertical */
+        nav {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 200px;
+            height: 100vh;
+            background-color: #f4f4f4;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            border-right: 2px solid #ccc;
+        }
 
+        .navbar-brand img {
+            width: 80px;
+            height: auto;
+            margin-bottom: 20px;
+        }
+
+        .navbar-menu {
+            list-style: none;
+            padding: 0;
+            width: 100%;
+        }
+
+        .navbar-menu li {
+            width: 100%;
+            text-align: center;
+            margin: 10px 0;
+        }
+
+        .navbar-menu a {
+            text-decoration: none;
+            color: black;
+            font-weight: bold;
+            display: block;
+            padding: 10px;
+            transition: background 0.3s;
+        }
+
+        .navbar-menu a:hover {
+            background-color: #ddd;
+        }
+
+        /* Contenedor principal ajustado */
+        #main-container {
+            margin-left: 220px; /* Deja espacio para la barra lateral */
+            padding: 20px;
+        }
+
+        /* Formulario */
+        #inline-form {
+            display: none;
+            background-color: lightgray;
+            padding: 15px;
+            border-radius: 10px;
+            width: 80%;
+            max-width: 400px;
+        }
+        
         #data-container {
             background-color: lightgray;
             padding: 15px;
@@ -110,27 +171,39 @@
     </div>
     
     <!-- Formulario directamente en la página -->
-    <div id="inline-form">
-        <label for="deck">Nombre del mazo</label>
-        <input type="text" id="deck" placeholder="Nombre del mazo">
+      <div id="inline-form">
+            <label for="deck">Nombre del mazo</label>
+            <input type="text" id="deck" placeholder="Nombre del mazo">
 
-        <label for="dueño">Dueño</label>
-        <input type="text" id="dueño" placeholder="Nombre del dueño">
+            <label for="dueño">Dueño</label>
+            <input type="text" id="dueño" placeholder="Nombre del dueño">
 
-        <label for="creador">Nombre del creador</label>
-        <input type="text" id="creador" placeholder="Nombre del creador">
+            <label>Precon?</label>
+            <div>
+                <input type="radio" id="precon-si" name="precon" value="SI" onclick="controlarCampos()">
+                <label for="precon-si">Sí</label>
 
-        <label for="de_precon">Precon?</label>
-        <input type="text" id="de_precon" placeholder="Precon?">
+                <input type="radio" id="precon-no" name="precon" value="NO" onclick="controlarCampos()">
+                <label for="precon-no">No</label>
+            </div>
 
-        <label for="modificado">Mazo modificado</label>
-        <input type="text" id="modificado" placeholder="Mazo modificado">
+            <label for="creador">Nombre del creador</label>
+            <input type="text" id="creador" placeholder="Nombre del creador">
 
-        <label for="clase">Clase del mazo</label>
-        <input type="text" id="clase" placeholder="Clase del mazo">
+            <label for="modificado">Mazo modificado</label>
+            <input type="text" id="modificado" placeholder="Mazo modificado">
 
-        <button class="btn form-btn" onclick="guardarDatos()">Guardar Datos</button>
-    </div>
+            <label>Clase del mazo</label>
+            <div class="class-options">
+                <input type="checkbox" id="rojo" value="Rojo"><label for="rojo">Rojo</label>
+                <input type="checkbox" id="verde" value="Verde"><label for="verde">Verde</label>
+                <input type="checkbox" id="azul" value="Azul"><label for="azul">Azul</label>
+                <input type="checkbox" id="blanco" value="Blanco"><label for="blanco">Blanco</label>
+                <input type="checkbox" id="negro" value="Negro"><label for="negro">Negro</label>
+            </div>
+
+            <button class="btn form-btn" onclick="guardarDatos()">Guardar Datos</button>
+        </div>
 
     <!-- Botón para ver los datos guardados -->
     <button class="btn nav-btn" onclick="window.location.href='datos.html'">Ver Datos Guardados</button>
@@ -162,7 +235,22 @@
             const inlineForm = document.getElementById('inline-form');
             inlineForm.style.display = inlineForm.style.display === 'block' ? 'none' : 'block';
         }
-        
+
+        function controlarCampos() {
+            let preconSi = document.getElementById("precon-si").checked;
+            let preconNo = document.getElementById("precon-no").checked;
+            let creador = document.getElementById("creador");
+            let modificado = document.getElementById("modificado");
+
+            if (preconSi) {
+                creador.disabled = true;
+                modificado.disabled = false;
+            } else if (preconNo) {
+                creador.disabled = false;
+                modificado.disabled = true;
+            }
+        }
+                
         function mostrar5Formulario() {
             console.log("Función mostrar5Formulario() aún no implementada.");
             alert("Esta función se implementará más adelante.");
