@@ -218,47 +218,39 @@
         </div>
         
         <!-- Formulario directamente en la página -->
-          <form  id="inline-form">
-                <label for="deck">Nombre del mazo</label>
-                <input type="text" id="deck" placeholder="Nombre del mazo">
+    <form id="inline-form" action="https://docs.google.com/forms/d/e/1FAIpQLSdjJ3zhRsTsDDu8_KdCwZjzvz3gYIvRFOfT1YuypQajZpuWzw/viewform?usp=header" method="POST">
+        <label for="deck">Nombre del mazo</label>
+        <input type="text" name="entry.1624728211" id="deck" placeholder="Nombre del mazo">
     
-                <label for="dueño">Dueño</label>
-                <input type="text" id="dueño" placeholder="Nombre del dueño">
+        <label for="dueño">Dueño</label>
+        <input type="text" name="entry.1061561435" id="dueño" placeholder="Nombre del dueño">
     
-                <label>Precon?</label>
-                <div class="radio-options">
-                    <input type="radio" id="precon-si" name="precon" value="SI" onclick="controlarCampos()">
-                    <label for="precon-si">Sí</label>
+        <label>Precon?</label>
+        <div class="radio-options">
+            <input type="radio" id="precon-si" name="entry.1118348865" value="SI">
+            <label for="precon-si">Sí</label>
     
-                    <input type="radio" id="precon-no" name="precon" value="NO" onclick="controlarCampos()">
-                    <label for="precon-no">No</label>
-                </div>
+            <input type="radio" id="precon-no" name="entry.1118348865" value="NO">
+            <label for="precon-no">No</label>
+        </div>
     
-                <label for="creador">Nombre del creador</label>
-                <input type="text" id="creador" placeholder="Nombre del creador">
+        <label for="creador">Nombre del creador</label>
+        <input type="text" name="entry.192837465" id="creador" placeholder="Nombre del creador">
     
-                <label for="modificado">Mazo modificado</label>
-                <input type="text" id="modificado" placeholder="Mazo modificado">
+        <label for="modificado">Mazo modificado</label>
+        <input type="text" name="entry.257092737" id="modificado" placeholder="Mazo modificado">
     
-                <label>Clase del mazo</label>
-                <div class="radio-options">
-                    <input type="radio" id="rojo" value="Rojo"><label for="rojo">Rojo</label>
-                    <input type="radio" id="verde" value="Verde"><label for="verde">Verde</label>
-                    <input type="radio" id="azul" value="Azul"><label for="azul">Azul</label>
-                    <input type="radio" id="blanco" value="Blanco"><label for="blanco">Blanco</label>
-                    <input type="radio" id="negro" value="Negro"><label for="negro">Negro</label>
-                    <select id="clase" multiple>
-                        <option value="Rojo">Rojo</option>
-                        <option value="Verde">Verde</option>
-                        <option value="Azul">Azul</option>
-                        <option value="Blanco">Blanco</option>
-                        <option value="Negro">Negro</option>
-                        <!-- Añade más opciones según sea necesario -->
-                    </select>
-                </div>
-            <button class="btn form-btn" type="button" onclick="guardarDatos()">Guardar Datos</button>
+        <label>Clase del mazo</label>
+        <div class="radio-options">
+            <input type="checkbox" name="entry.2111253431" value="Rojo"><label>Rojo</label>
+            <input type="checkbox" name="entry.2111253431" value="Verde"><label>Verde</label>
+            <input type="checkbox" name="entry.2111253431" value="Azul"><label>Azul</label>
+            <input type="checkbox" name="entry.2111253431" value="Blanco"><label>Blanco</label>
+            <input type="checkbox" name="entry.2111253431" value="Negro"><label>Negro</label>
+        </div>
+    
+        <button class="btn form-btn" type="submit">Guardar Datos</button>
     </form>
-
         
         <!-- Botón para ver los datos guardados -->
         <button class="btn nav-btn" onclick="window.location.href='datos.html'">Ver Datos Guardados</button>
