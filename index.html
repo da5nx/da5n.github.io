@@ -14,8 +14,7 @@
             margin: 0;
             text-align: center;
         }
-
-        /* Barra de navegación */
+        /* Barra de navegación en vertical */
         nav {
             position: fixed;
             left: 0;
@@ -24,11 +23,15 @@
             height: 100vh;
             background-color: #f4f4f4;
             padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
             border-right: 2px solid #ccc;
         }
 
         .navbar-brand img {
             width: 80px;
+            height: auto;
             margin-bottom: 20px;
         }
 
@@ -39,6 +42,7 @@
         }
 
         .navbar-menu li {
+            width: 100%;
             text-align: center;
             margin: 10px 0;
         }
@@ -56,14 +60,14 @@
             background-color: #ddd;
         }
 
-        /* Contenedor principal */
+        /* Contenedor principal ajustado */
         #main-container {
-            margin-left: 220px;
+            margin-left: 220px; /* Deja espacio para la barra lateral */
             padding: 20px;
         }
 
         /* Formulario */
-        .form-container {
+        #inline-form {
             display: none;
             background-color: lightgray;
             padding: 15px;
@@ -71,14 +75,13 @@
             width: 80%;
             max-width: 400px;
         }
-
-        /* Botones en línea */
-        .inline-options, .class-options {
-            display: flex;
-            gap: 10px;
-            justify-content: center;
-            margin-top: 10px;
-            flex-wrap: wrap;
+        
+        #data-container {
+            background-color: lightgray;
+            padding: 15px;
+            border-radius: 10px;
+            width: 80%;
+            max-width: 400px;
         }
 
         .btn {
@@ -103,12 +106,18 @@
         .inline-btn { background-color: orange; }
         .inline-btn:hover { background-color: darkorange; }
 
-        .view-data-btn { background-color: darkred; }
-        .view-data-btn:hover { background-color: red; }
-
         iframe {
             border: none;
             margin-top: 20px;
+        }
+
+        #inline-form {
+            display: none;
+            background-color: lightgray;
+            padding: 15px;
+            border-radius: 10px;
+            width: 80%;
+            max-width: 400px;
         }
 
         input {
@@ -144,67 +153,142 @@
     <h1>Magic</h1> 
     <h2>Ingresa el mazo</h2> 
 
-    <!-- Botones de formularios -->
-    <button class="btn form-btn" onclick="mostrarFormulario('form-google')">Ingresar Datos en Google Form (1)</button>
-    <button class="btn embed-btn" onclick="mostrarFormulario('form-embed')">Ingresar Datos en esta Página (2)</button>
-    <button class="btn embed-btn" onclick="mostrarFormulario('form-embed2')">Ingresar Datos en esta Página (4)</button>
-    <button class="btn inline-btn" onclick="mostrarFormulario('inline-form')">Ingresar Datos en esta Página (3)</button>
-    <button class="btn view-data-btn" onclick="window.open('https://docs.google.com/spreadsheets/d/1Jc2X_4ohKg11o60Wl6yeweRHbbOpWBcAN9fPvXndfhY/edit#gid=0')">Ver Datos Guardados</button>
+    <!-- Botón para redirigir al Formulario de Google (1) -->
+    <button class="btn form-btn" onclick="redirigirFormulario()">Ingresar Datos en Google Form (1)</button>
 
-    <!-- Contenedores de formularios -->
-    <div id="form-google" class="form-container">
-        <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSdjJ3zhRsTsDDu8_KdCwZjzvz3gYIvRFOfT1YuypQajZpuWzw/viewform" width="640" height="800"></iframe>
+    <!-- Botón para redirigir al Formulario de Google (2) -->
+    <button class="btn embed-btn" onclick="mostrarFormulario()">Ingresar Datos en esta Página (2)</button>
+
+    <!-- Botón para mostrar el formulario incrustado (4) -->
+    <button class="btn embed-btn" onclick="mostrar5Formulario()">Ingresar Datos en esta Página (4)</button>
+    
+    <!-- Botón para redirigir al Formulario de Google (3) -->
+    <button class="btn inline-btn" onclick="mostrarFormularioInline()">Ingresar Datos en esta Página (3)</button>
+
+    <!-- Contenedor para el formulario incrustado -->
+    <div id="form-embed" style="display: none;">
+        <iframe id="google-form" src="" width="640" height="800">Cargando...</iframe>
     </div>
+    
+    <!-- Formulario directamente en la página -->
+      <div id="inline-form">
+            <label for="deck">Nombre del mazo</label>
+            <input type="text" id="deck" placeholder="Nombre del mazo">
 
-    <div id="form-embed" class="form-container">
-        <iframe src="" width="640" height="800"></iframe>
-    </div>
+            <label for="dueño">Dueño</label>
+            <input type="text" id="dueño" placeholder="Nombre del dueño">
 
-    <div id="inline-form" class="form-container">
-        <label for="deck">Nombre del mazo</label>
-        <input type="text" id="deck" placeholder="Nombre del mazo">
+            <label>Precon?</label>
+            <div>
+                <input type="radio" id="precon-si" name="precon" value="SI" onclick="controlarCampos()">
+                <label for="precon-si">Sí</label>
 
-        <label for="dueño">Dueño</label>
-        <input type="text" id="dueño" placeholder="Nombre del dueño">
+                <input type="radio" id="precon-no" name="precon" value="NO" onclick="controlarCampos()">
+                <label for="precon-no">No</label>
+            </div>
 
-        <label>Precon?</label>
-        <div class="inline-options">
-            <input type="radio" id="precon-si" name="precon" value="SI" onclick="controlarCampos()">
-            <label for="precon-si">Sí</label>
+            <label for="creador">Nombre del creador</label>
+            <input type="text" id="creador" placeholder="Nombre del creador">
 
-            <input type="radio" id="precon-no" name="precon" value="NO" onclick="controlarCampos()">
-            <label for="precon-no">No</label>
+            <label for="modificado">Mazo modificado</label>
+            <input type="text" id="modificado" placeholder="Mazo modificado">
+
+            <label>Clase del mazo</label>
+            <div class="class-options">
+                <input type="checkbox" id="rojo" value="Rojo"><label for="rojo">Rojo</label>
+                <input type="checkbox" id="verde" value="Verde"><label for="verde">Verde</label>
+                <input type="checkbox" id="azul" value="Azul"><label for="azul">Azul</label>
+                <input type="checkbox" id="blanco" value="Blanco"><label for="blanco">Blanco</label>
+                <input type="checkbox" id="negro" value="Negro"><label for="negro">Negro</label>
+            </div>
+
+            <button class="btn form-btn" onclick="guardarDatos()">Guardar Datos</button>
         </div>
-
-        <label>Clase del mazo</label>
-        <div class="class-options">
-            <input type="checkbox" id="rojo" value="Rojo"><label for="rojo">Rojo</label>
-            <input type="checkbox" id="verde" value="Verde"><label for="verde">Verde</label>
-            <input type="checkbox" id="azul" value="Azul"><label for="azul">Azul</label>
-            <input type="checkbox" id="blanco" value="Blanco"><label for="blanco">Blanco</label>
-            <input type="checkbox" id="negro" value="Negro"><label for="negro">Negro</label>
-        </div>
     </div>
+    
+    <!-- Botón para ver los datos guardados -->
+    <button class="btn nav-btn" onclick="window.location.href='datos.html'">Ver Datos Guardados</button>
 
     <script>
-        let formularioAbierto = null;
+        const FORM_URL = 'https://docs.google.com/forms/d/13NSbSvG8fOsbuLTScUOZRJqi-IFdG_kxJo3Pdc_54aQ/viewform';
+        const FORM_ACTION_URL = "https://docs.google.com/forms/d/e/1FAIpQLSdjJ3zhRsTsDDu8_KdCwZjzvz3gYIvRFOfT1YuypQajZpuWzw/formResponse"; 
 
-        function mostrarFormulario(id) {
-            if (formularioAbierto && formularioAbierto !== id) {
-                document.getElementById(formularioAbierto).style.display = 'none';
+        const ENTRY_DECK = "entry.1624728211";  
+        const ENTRY_DUENO = "entry.1061561435"; 
+        const ENTRY_CREADOR = "entry.192837465"; 
+        const ENTRY_PRECON = "entry.1118348865"; 
+        const ENTRY_MODIFICADO = "entry.257092737"; 
+        const ENTRY_CLASE = "entry.123456789"; 
+
+        function redirigirFormulario() {
+            window.location.href = FORM_URL;
+        }
+
+        function mostrarFormulario() {
+            const formEmbed = document.getElementById('form-embed');
+            if (formEmbed.style.display === 'block') {
+                formEmbed.style.display = 'none'; // Oculta si ya está visible
+            } else {
+                document.getElementById('google-form').src = FORM_URL + '?embedded=true';
+                formEmbed.style.display = 'block';
             }
-
-            const formulario = document.getElementById(id);
-            formulario.style.display = (formulario.style.display === 'block') ? 'none' : 'block';
-
-            formularioAbierto = formulario.style.display === 'block' ? id : null;
+        }
+        function mostrarFormularioInline() {
+            const inlineForm = document.getElementById('inline-form');
+            inlineForm.style.display = inlineForm.style.display === 'block' ? 'none' : 'block';
         }
 
         function controlarCampos() {
-            document.getElementById("creador").disabled = document.getElementById("precon-si").checked;
-            document.getElementById("modificado").disabled = document.getElementById("precon-no").checked;
-        }
-    </script>
+            let preconSi = document.getElementById("precon-si").checked;
+            let preconNo = document.getElementById("precon-no").checked;
+            let creador = document.getElementById("creador");
+            let modificado = document.getElementById("modificado");
 
+            if (preconSi) {
+                creador.disabled = true;
+                modificado.disabled = false;
+            } else if (preconNo) {
+                creador.disabled = false;
+                modificado.disabled = true;
+            }
+        }
+                
+        function mostrar5Formulario() {
+            console.log("Función mostrar5Formulario() aún no implementada.");
+            alert("Esta función se implementará más adelante.");
+        }
+        function guardarDatos() {
+            const deck = document.getElementById('deck').value.trim();
+            const dueño = document.getElementById('dueño').value.trim();
+            const creador = document.getElementById('creador').value.trim();
+            const de_precon = document.getElementById('de_precon').value.trim();
+            const modificado = document.getElementById('modificado').value.trim();
+            const clase = document.getElementById('clase').value.trim();
+        
+            if (deck && dueño && creador && de_precon && modificado && clase) {
+                const formData = new FormData();
+                formData.append(ENTRY_DECK, deck);
+                formData.append(ENTRY_DUENO, dueño);
+                formData.append(ENTRY_CREADOR, creador);
+                formData.append(ENTRY_PRECON, de_precon);
+                formData.append(ENTRY_MODIFICADO, modificado);
+                formData.append(ENTRY_CLASE, clase);
+
+                fetch(FORM_ACTION_URL, {
+                    method: "POST",
+                    body: formData,
+                    mode: "no-cors"
+                }).then(() => {
+                    alert("Datos enviados correctamente.");
+                    document.getElementById("inline-form").reset();
+                }).catch(error => {
+                    alert("Hubo un error al enviar los datos.");
+                    console.error(error);
+                });
+            } else {
+                alert("Por favor, complete todos los campos.");
+            }
+        } 
+    </script>
 </body>
 </html>
