@@ -127,19 +127,6 @@
             border: 1px solid #ccc;
             border-radius: 5px;
         }
-
-            .radio-container, .class-options {
-            display: flex;
-            gap: 10px; /* Espacio entre los botones */
-            align-items: center;
-            flex-wrap: wrap; /* Permite ajuste si hay poco espacio */
-        }
-        
-        .class-options input {
-            margin-right: 5px;
-        }
-            
-        
     </style>
 </head>
 <body>
@@ -233,20 +220,6 @@
         const ENTRY_MODIFICADO = "entry.257092737"; 
         const ENTRY_CLASE = "entry.123456789"; 
 
-        function mostrarFormulario(id) {
-            // Oculta todos los formularios
-            const formularios = document.querySelectorAll('.form-container');
-            formularios.forEach(form => {
-                if (form.id !== id) {
-                    form.style.display = 'none';
-                }
-            });
-        
-            // Alternar el formulario seleccionado
-            const formulario = document.getElementById(id);
-            formulario.style.display = (formulario.style.display === 'block') ? 'none' : 'block';
-        }
-        
         function redirigirFormulario() {
             window.location.href = FORM_URL;
         }
@@ -264,7 +237,7 @@
             const inlineForm = document.getElementById('inline-form');
             inlineForm.style.display = inlineForm.style.display === 'block' ? 'none' : 'block';
         }
-        
+
         function controlarCampos() {
             let preconSi = document.getElementById("precon-si").checked;
             let preconNo = document.getElementById("precon-no").checked;
