@@ -15,7 +15,7 @@
             text-align: center;
         }
 
-        /* Barra de navegación en vertical */
+        /* Barra de navegación */
         nav {
             position: fixed;
             left: 0;
@@ -24,15 +24,11 @@
             height: 100vh;
             background-color: #f4f4f4;
             padding: 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
             border-right: 2px solid #ccc;
         }
 
         .navbar-brand img {
             width: 80px;
-            height: auto;
             margin-bottom: 20px;
         }
 
@@ -43,7 +39,6 @@
         }
 
         .navbar-menu li {
-            width: 100%;
             text-align: center;
             margin: 10px 0;
         }
@@ -61,7 +56,7 @@
             background-color: #ddd;
         }
 
-        /* Contenedor principal ajustado */
+        /* Contenedor principal */
         #main-container {
             margin-left: 220px;
             padding: 20px;
@@ -78,19 +73,12 @@
         }
 
         /* Botones en línea */
-        .inline-options {
+        .inline-options, .class-options {
             display: flex;
             gap: 10px;
             justify-content: center;
             margin-top: 10px;
-        }
-
-        /* Opciones de clase del mazo */
-        .class-options {
-            display: flex;
             flex-wrap: wrap;
-            gap: 10px;
-            justify-content: center;
         }
 
         .btn {
@@ -114,6 +102,9 @@
 
         .inline-btn { background-color: orange; }
         .inline-btn:hover { background-color: darkorange; }
+
+        .view-data-btn { background-color: darkred; }
+        .view-data-btn:hover { background-color: red; }
 
         iframe {
             border: none;
@@ -158,6 +149,7 @@
     <button class="btn embed-btn" onclick="mostrarFormulario('form-embed')">Ingresar Datos en esta Página (2)</button>
     <button class="btn embed-btn" onclick="mostrarFormulario('form-embed2')">Ingresar Datos en esta Página (4)</button>
     <button class="btn inline-btn" onclick="mostrarFormulario('inline-form')">Ingresar Datos en esta Página (3)</button>
+    <button class="btn view-data-btn" onclick="window.open('https://docs.google.com/spreadsheets/d/1Jc2X_4ohKg11o60Wl6yeweRHbbOpWBcAN9fPvXndfhY/edit#gid=0')">Ver Datos Guardados</button>
 
     <!-- Contenedores de formularios -->
     <div id="form-google" class="form-container">
