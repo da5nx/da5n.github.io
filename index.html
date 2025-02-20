@@ -290,14 +290,19 @@
             let preconNo = document.getElementById("precon-no").checked;
             let creador = document.getElementById("creador");
             let modificado = document.getElementById("modificado");
+
             if (preconSi) {
                 creador.disabled = true;
                 modificado.disabled = false;
             } else if (preconNo) {
                 creador.disabled = false;
                 modificado.disabled = true;
+            } else {
+                creador.disabled = false;
+                modificado.disabled = false;
             }
         }
+
 
         function mostrar5Formulario() {
             console.log("Función mostrar5Formulario() aún no implementada.");
