@@ -25,6 +25,21 @@
             filter: blur(10px); /* Ajusta el nivel de difuminado */
             z-index: -1; /* Para que quede detrás del contenido */
         }
+
+       .navbar-container2 {
+            position: fixed;
+            right: 0; /* Mueve la barra al lado derecho */
+            top: 0;
+            width: 200px;
+            height: 100vh;
+            background-color: #f4f4f4;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            border-left: 2px solid #ccc; /* Borde ahora a la izquierda */
+        }
+
         
         /* Barra de navegación en vertical */
         nav {
@@ -182,62 +197,64 @@
     <h1>Magic</h1> 
     <h2>Ingresa el mazo</h2> 
 
-    <!-- Botón para redirigir al Formulario de Google (1) -->
-    <button class="btn form-btn" onclick="redirigirFormulario()">Ingresar Datos en Google Form (1)</button>
-
-    <!-- Botón para redirigir al Formulario de Google (2) -->
-    <button class="btn embed-btn" onclick="mostrarFormulario()">Ingresar Datos en esta Página (2)</button>
-
-    <!-- Botón para mostrar el formulario incrustado (4) -->
-    <button class="btn embed-btn" onclick="mostrar5Formulario()">Ingresar Datos en esta Página (4)</button>
+    <div class="navbar-container2">
+        <!-- Botón para redirigir al Formulario de Google (1) -->
+        <button class="btn form-btn" onclick="redirigirFormulario()">Ingresar Datos en Google Form (1)</button>
     
-    <!-- Botón para redirigir al Formulario de Google (3) -->
-    <button class="btn inline-btn" onclick="mostrarFormularioInline()">Ingresar Datos en esta Página (3)</button>
-
-    <!-- Contenedor para el formulario incrustado -->
-    <div id="form-embed" style="display: none;">
-        <iframe id="google-form" src="" width="640" height="800">Cargando...</iframe>
-    </div>
+        <!-- Botón para redirigir al Formulario de Google (2) -->
+        <button class="btn embed-btn" onclick="mostrarFormulario()">Ingresar Datos en esta Página (2)</button>
     
-    <!-- Formulario directamente en la página -->
-      <div id="inline-form">
-            <label for="deck">Nombre del mazo</label>
-            <input type="text" id="deck" placeholder="Nombre del mazo">
-
-            <label for="dueño">Dueño</label>
-            <input type="text" id="dueño" placeholder="Nombre del dueño">
-
-            <label>Precon?</label>
-            <div class="radio-options">
-                <input type="radio" id="precon-si" name="precon" value="SI" onclick="controlarCampos()">
-                <label for="precon-si">Sí</label>
-
-                <input type="radio" id="precon-no" name="precon" value="NO" onclick="controlarCampos()">
-                <label for="precon-no">No</label>
-            </div>
-
-            <label for="creador">Nombre del creador</label>
-            <input type="text" id="creador" placeholder="Nombre del creador">
-
-            <label for="modificado">Mazo modificado</label>
-            <input type="text" id="modificado" placeholder="Mazo modificado">
-
-            <label>Clase del mazo</label>
-            <div class="radio-options">
-                <input type="radio" id="rojo" value="Rojo"><label for="rojo">Rojo</label>
-                <input type="radio" id="verde" value="Verde"><label for="verde">Verde</label>
-                <input type="radio" id="azul" value="Azul"><label for="azul">Azul</label>
-                <input type="radio" id="blanco" value="Blanco"><label for="blanco">Blanco</label>
-                <input type="radio" id="negro" value="Negro"><label for="negro">Negro</label>
-            </div>
-
-            <button class="btn form-btn" onclick="guardarDatos()">Guardar Datos</button>
+        <!-- Botón para mostrar el formulario incrustado (4) -->
+        <button class="btn embed-btn" onclick="mostrar5Formulario()">Ingresar Datos en esta Página (4)</button>
+        
+        <!-- Botón para redirigir al Formulario de Google (3) -->
+        <button class="btn inline-btn" onclick="mostrarFormularioInline()">Ingresar Datos en esta Página (3)</button>
+    
+        <!-- Contenedor para el formulario incrustado -->
+        <div id="form-embed" style="display: none;">
+            <iframe id="google-form" src="" width="640" height="800">Cargando...</iframe>
         </div>
+        
+        <!-- Formulario directamente en la página -->
+          <div id="inline-form">
+                <label for="deck">Nombre del mazo</label>
+                <input type="text" id="deck" placeholder="Nombre del mazo">
+    
+                <label for="dueño">Dueño</label>
+                <input type="text" id="dueño" placeholder="Nombre del dueño">
+    
+                <label>Precon?</label>
+                <div class="radio-options">
+                    <input type="radio" id="precon-si" name="precon" value="SI" onclick="controlarCampos()">
+                    <label for="precon-si">Sí</label>
+    
+                    <input type="radio" id="precon-no" name="precon" value="NO" onclick="controlarCampos()">
+                    <label for="precon-no">No</label>
+                </div>
+    
+                <label for="creador">Nombre del creador</label>
+                <input type="text" id="creador" placeholder="Nombre del creador">
+    
+                <label for="modificado">Mazo modificado</label>
+                <input type="text" id="modificado" placeholder="Mazo modificado">
+    
+                <label>Clase del mazo</label>
+                <div class="radio-options">
+                    <input type="radio" id="rojo" value="Rojo"><label for="rojo">Rojo</label>
+                    <input type="radio" id="verde" value="Verde"><label for="verde">Verde</label>
+                    <input type="radio" id="azul" value="Azul"><label for="azul">Azul</label>
+                    <input type="radio" id="blanco" value="Blanco"><label for="blanco">Blanco</label>
+                    <input type="radio" id="negro" value="Negro"><label for="negro">Negro</label>
+                </div>
+    
+                <button class="btn form-btn" onclick="guardarDatos()">Guardar Datos</button>
+            </div>
+        </div>
+        
+        <!-- Botón para ver los datos guardados -->
+        <button class="btn nav-btn" onclick="window.location.href='datos.html'">Ver Datos Guardados</button>
     </div>
     
-    <!-- Botón para ver los datos guardados -->
-    <button class="btn nav-btn" onclick="window.location.href='datos.html'">Ver Datos Guardados</button>
-
     <script>
         const FORM_URL = 'https://docs.google.com/forms/d/13NSbSvG8fOsbuLTScUOZRJqi-IFdG_kxJo3Pdc_54aQ/viewform';
         const FORM_ACTION_URL = "https://docs.google.com/forms/d/e/1FAIpQLSdjJ3zhRsTsDDu8_KdCwZjzvz3gYIvRFOfT1YuypQajZpuWzw/formResponse"; 
