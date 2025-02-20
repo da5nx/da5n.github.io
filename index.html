@@ -218,7 +218,7 @@
         </div>
         
         <!-- Formulario directamente en la página -->
-          <div id="inline-form">
+          <form  id="inline-form">
                 <label for="deck">Nombre del mazo</label>
                 <input type="text" id="deck" placeholder="Nombre del mazo">
     
@@ -247,10 +247,17 @@
                     <input type="radio" id="azul" value="Azul"><label for="azul">Azul</label>
                     <input type="radio" id="blanco" value="Blanco"><label for="blanco">Blanco</label>
                     <input type="radio" id="negro" value="Negro"><label for="negro">Negro</label>
+                    <select id="clase" multiple>
+                        <option value="Rojo">Rojo</option>
+                        <option value="Verde">Verde</option>
+                        <option value="Azul">Azul</option>
+                        <option value="Blanco">Blanco</option>
+                        <option value="Negro">Negro</option>
+                        <!-- Añade más opciones según sea necesario -->
+                    </select>
                 </div>
-    
-                <button class="btn form-btn" onclick="guardarDatos()">Guardar Datos</button>
-            </div>
+            <button class="btn form-btn" type="button" onclick="guardarDatos()">Guardar Datos</button>
+    </form>
 
         
         <!-- Botón para ver los datos guardados -->
@@ -259,14 +266,13 @@
     
     <script>
         const FORM_URL = 'https://docs.google.com/forms/d/13NSbSvG8fOsbuLTScUOZRJqi-IFdG_kxJo3Pdc_54aQ/viewform';
-        const FORM_ACTION_URL = "https://docs.google.com/forms/d/e/1FAIpQLSdjJ3zhRsTsDDu8_KdCwZjzvz3gYIvRFOfT1YuypQajZpuWzw/formResponse"; 
-
-        const ENTRY_DECK = "entry.1624728211";  
-        const ENTRY_DUENO = "entry.1061561435"; 
-        const ENTRY_CREADOR = "entry.192837465"; 
-        const ENTRY_PRECON = "entry.1118348865"; 
-        const ENTRY_MODIFICADO = "entry.257092737"; 
-        const ENTRY_CLASE = "entry.2111253431"; 
+        const FORM_ACTION_URL = "https://docs.google.com/forms/d/e/1FAIpQLSdjJ3zhRsTsDDu8_KdCwZjzvz3gYIvRFOfT1YuypQajZpuWzw/formResponse";
+        const ENTRY_DECK = "entry.1624728211";
+        const ENTRY_DUENO = "entry.1061561435";
+        const ENTRY_CREADOR = "entry.192837465";
+        const ENTRY_PRECON = "entry.1118348865";
+        const ENTRY_MODIFICADO = "entry.257092737";
+        const ENTRY_CLASE = "entry.2111253431";
 
         function redirigirFormulario() {
             window.location.href = FORM_URL;
@@ -281,6 +287,7 @@
                 formEmbed.style.display = 'block';
             }
         }
+
         function mostrarFormularioInline() {
             const inlineForm = document.getElementById('inline-form');
             inlineForm.style.display = inlineForm.style.display === 'block' ? 'none' : 'block';
@@ -291,7 +298,6 @@
             let preconNo = document.getElementById("precon-no").checked;
             let creador = document.getElementById("creador");
             let modificado = document.getElementById("modificado");
-
             if (preconSi) {
                 creador.disabled = true;
                 modificado.disabled = false;
@@ -300,35 +306,40 @@
                 modificado.disabled = true;
             }
         }
-                
+
         function mostrar5Formulario() {
             console.log("Función mostrar5Formulario() aún no implementada.");
             alert("Esta función se implementará más adelante.");
         }
+
         function guardarDatos() {
             const deck = document.getElementById('deck').value.trim();
             const dueño = document.getElementById('dueño').value.trim();
             const creador = document.getElementById('creador').value.trim();
             const de_precon = document.getElementById('de_precon').value.trim();
             const modificado = document.getElementById('modificado').value.trim();
-            const clase = document.getElementById('clase').value.trim();
-        
-            if (deck && dueño && creador && de_precon && modificado && clase) {
+            const clase = Array.from(document.getElementById('clase').selectedOptions).map(option => option.value);
+
+            if (deck && dueño && creador && de_precon && modificado && clase.length > 0) {
                 const formData = new FormData();
                 formData.append(ENTRY_DECK, deck);
                 formData.append(ENTRY_DUENO, dueño);
                 formData.append(ENTRY_CREADOR, creador);
                 formData.append(ENTRY_PRECON, de_precon);
                 formData.append(ENTRY_MODIFICADO, modificado);
-                formData.append(ENTRY_CLASE, clase);
+                clase.forEach(valor => formData.append(ENTRY_CLASE, valor));
 
                 fetch(FORM_ACTION_URL, {
                     method: "POST",
                     body: formData,
-                    mode: "no-cors"
-                }).then(() => {
-                    alert("Datos enviados correctamente.");
-                    document.getElementById("inline-form").reset();
+                    mode: "cors"
+                }).then(response => {
+                    if (response.ok) {
+                        alert("Datos enviados correctamente.");
+                        document.getElementById("inline-form").reset();
+                    } else {
+                        throw new Error('Error en la respuesta del servidor');
+                    }
                 }).catch(error => {
                     alert("Hubo un error al enviar los datos.");
                     console.error(error);
@@ -336,7 +347,7 @@
             } else {
                 alert("Por favor, complete todos los campos.");
             }
-        } 
+        }
     </script>
 </body>
 </html>
