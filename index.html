@@ -242,7 +242,7 @@
             <input type="radio" id="modificado-si" name="entry.257092737" value="SI" onclick="controlarCampos()">
             <label for="modificado-si">Sí</label>
             
-            <input type="radio" id="modificadon-no" name="entry.257092737" value="NO" onclick="controlarCampos()">
+            <input type="radio" id="modificado-no" name="entry.257092737" value="NO" onclick="controlarCampos()">
             <label for="modificado-no">No</label>
         </div>
     
@@ -295,17 +295,21 @@
             let preconSi = document.getElementById("precon-si").checked;
             let preconNo = document.getElementById("precon-no").checked;
             let creador = document.getElementById("creador");
-            let modificado = document.getElementById("modificado");
+            let modificadoSi = document.getElementById("modificado-si");
+            let modificadoNo = document.getElementById("modificado-no");
 
             if (preconSi) {
                 creador.disabled = true;
-                modificado.disabled = false;
+                modificadoSi.disabled = false;
+                modificadoNo.disabled = false;
             } else if (preconNo) {
                 creador.disabled = false;
-                modificado.disabled = true;
+                modificadoSi.disabled = true;
+                modificadoNo.disabled = true;
             } else {
                 creador.disabled = false;
-                modificado.disabled = false;
+                modificadoSi.disabled = false;
+                modificadoNo.disabled = false;
             }
         }
 
