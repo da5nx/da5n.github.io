@@ -127,6 +127,13 @@
             border: 1px solid #ccc;
             border-radius: 5px;
         }
+
+     .radio-options {
+            display: flex;
+            align-items: center;
+            gap: 10px; /* Espacio entre los elementos */
+        }
+
     </style>
 </head>
 <body>
@@ -135,7 +142,7 @@
     <nav>
         <div class="navbar-container">
             <a class="navbar-brand" href="#">
-                <img src="imagen/a" alt="Logo">
+                <img src="imagen/black_lotus1.png" alt="Logo">
                 <span>PEREIRA.JS</span>
             </a>
             <ul class="navbar-menu">
@@ -179,7 +186,7 @@
             <input type="text" id="dueño" placeholder="Nombre del dueño">
 
             <label>Precon?</label>
-            <div>
+            <div class="radio-options">
                 <input type="radio" id="precon-si" name="precon" value="SI" onclick="controlarCampos()">
                 <label for="precon-si">Sí</label>
 
