@@ -127,6 +127,18 @@
             border: 1px solid #ccc;
             border-radius: 5px;
         }
+
+        .radio-container, .class-options {
+            display: flex;
+            gap: 10px; /* Espacio entre los botones */
+            align-items: center;
+            flex-wrap: wrap; /* Permite ajuste si hay poco espacio */
+        }
+        
+        .class-options input {
+            margin-right: 5px;
+        }
+        
     </style>
 </head>
 <body>
@@ -224,6 +236,20 @@
             window.location.href = FORM_URL;
         }
 
+        function mostrarFormulario(id) {
+            // Oculta todos los formularios
+            const formularios = document.querySelectorAll('.form-container');
+            formularios.forEach(form => {
+                if (form.id !== id) {
+                    form.style.display = 'none';
+                }
+            });
+        
+            // Alternar el formulario seleccionado
+            const formulario = document.getElementById(id);
+            formulario.style.display = (formulario.style.display === 'block') ? 'none' : 'block';
+        }
+        
         function mostrarFormulario() {
             const formEmbed = document.getElementById('form-embed');
             if (formEmbed.style.display === 'block') {
