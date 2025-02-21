@@ -272,11 +272,20 @@
         const ENTRY_MODIFICADO = "entry.257092737";
         const ENTRY_CLASE = "entry.2111253431";
 
+        function cerrarFormulariosAbiertos() {
+            const formEmbed = document.getElementById('form-embed');
+            const inlineForm = document.getElementById('inline-form');
+            formEmbed.style.display = 'none';
+            inlineForm.style.display = 'none';
+        }
+        
         function redirigirFormulario() {
+            cerrarFormulariosAbiertos();
             window.location.href = FORM_URL;
         }
 
         function mostrarFormulario() {
+            cerrarFormulariosAbiertos();
             const formEmbed = document.getElementById('form-embed');
             if (formEmbed.style.display === 'block') {
                 formEmbed.style.display = 'none'; // Oculta si ya está visible
@@ -287,6 +296,7 @@
         }
 
         function mostrarFormularioInline() {
+            cerrarFormulariosAbiertos();
             const inlineForm = document.getElementById('inline-form');
             inlineForm.style.display = inlineForm.style.display === 'block' ? 'none' : 'block';
         }
@@ -315,6 +325,7 @@
 
 
         function mostrar5Formulario() {
+            cerrarFormulariosAbiertos();
             console.log("Función mostrar5Formulario() aún no implementada.");
             alert("Esta función se implementará más adelante.");
         }
