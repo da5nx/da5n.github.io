@@ -152,6 +152,12 @@
             border: 1px solid #ccc;
             border-radius: 5px;
         }
+
+         .radio-options {
+            display: flex;
+            align-items: center;
+            gap: 10px; /* Espacio entre los elementos */
+        }
     </style>
 </head>
 <body>
@@ -196,7 +202,7 @@
     <button class="btn inline-btn" onclick="mostrarFormularioInline()">Ingresar Datos en esta Página (3)</button>
 
     <!-- Formulario directamente en la página -->
-    <div id="inline-form">
+    <form id="inline-form">
         <label for="deck">Nombre del mazo</label>
         <input type="text" id="deck" placeholder="Nombre del mazo">
 
@@ -206,25 +212,58 @@
         <label for="creador">Nombre del creador</label>
         <input type="text" id="creador" placeholder="Nombre del creador">
 
-        <label for="de_precon">Precon?</label>
-        <input type="text" id="de_precon" placeholder="Precon?">
-
+        <label>Precon?</label>
+        <div class="radio-options">
+            <input type="radio" id="precon-si" name="entry.1" value="SI" onclick="controlarCampos()">
+            <label for="precon-si">Sí</label>
+            
+            <input type="radio" id="precon-no" name="entry.1" value="NO" onclick="controlarCampos()">
+            <label for="precon-no">No</label>
+        </div>
+        
         <label for="modificado">Mazo modificado</label>
-        <input type="text" id="modificado" placeholder="Mazo modificado">
+        <div class="radio-options">
+            <input type="radio" id="modificado-si" name="entry.3" value="SI" onclick="controlarCampos()">
+            <label for="modificado-si">Sí</label>
+            
+            <input type="radio" id="modificado-no" name="entry.3" value="NO" onclick="controlarCampos()">
+            <label for="modificado-no">No</label>
+        </div>
 
-        <label for="clase">Clase del mazo</label>
-        <input type="text" id="clase" placeholder="Clase del mazo">
+        <label>Colores</label>
+        <div class="radio-options">
+            <input type="checkbox" name="entry.2" value="Rojo"><label>Rojo</label>
+            <input type="checkbox" name="entry.2" value="Verde"><label>Verde</label>
+            <input type="checkbox" name="entry.2" value="Azul"><label>Azul</label>
+            <input type="checkbox" name="entry.2" value="Blanco"><label>Blanco</label>
+            <input type="checkbox" name="entry.2" value="Negro"><label>Negro</label>
+        </div>
 
-        <button class="btn form-btn" onclick="guardarDatos()">Guardar Datos</button>
-    </div>
+        <button class="btn form-btn" type="submit">Guardar Datos</button>
+    </form>
 
     <!-- Botón para ver los datos guardados -->
     <button class="btn nav-btn" onclick="window.location.href='datos2.html'">Ver Datos Guardados</button>
 
     <script>
         const FORM_URL = 'https://docs.google.com/forms/d/13NSbSvG8fOsbuLTScUOZRJqi-IFdG_kxJo3Pdc_54aQ/viewform';
-
+        const ENTRY_DECK = "entry.1624728211";
+        const ENTRY_DUENO = "entry.1061561435";
+        const ENTRY_CREADOR = "entry.192837465";
+        const ENTRY_PRECON = "entry.1118348865";
+        const ENTRY_MODIFICADO = "entry.257092737";
+        const ENTRY_CLASE = "entry.2111253431";
+        
+        function cerrarFormulariosAbiertos() {
+            const formEmbed = document.getElementById('form-embed');
+            const inlineForm = document.getElementById('inline-form');
+            const patataContainer = document.getElementById('patata-container');
+            formEmbed.style.display = 'none';
+            inlineForm.style.display = 'none';
+            patataContainer.style.display = 'none';
+        }
         function redirigirFormulario() {
+            cerrarFormulariosAbiertos();
             window.location.href = FORM_URL;
         }
 
@@ -233,6 +272,7 @@
             if (formEmbed.style.display === 'block') {
                 formEmbed.style.display = 'none'; // Oculta si ya está visible
             } else {
+                cerrarFormulariosAbiertos();
                 document.getElementById('google-form').src = FORM_URL + '?embedded=true';
                 formEmbed.style.display = 'block';
             }
@@ -240,8 +280,84 @@
         
         function mostrarFormularioInline() {
             const inlineForm = document.getElementById('inline-form');
-            inlineForm.style.display = inlineForm.style.display === 'block' ? 'none' : 'block';
+            if (inlineForm.style.display === 'block') {
+                inlineForm.style.display = 'none';
+            } else {
+                cerrarFormulariosAbiertos();
+                inlineForm.style.display = 'block';
+            }
         }
+
+        function controlarCampos() {
+            let preconSi = document.getElementById("precon-si").checked;
+            let preconNo = document.getElementById("precon-no").checked;
+            let creador = document.getElementById("creador");
+            let modificadoSi = document.getElementById("modificado-si");
+            let modificadoNo = document.getElementById("modificado-no");
+
+            if (preconSi) {
+                creador.disabled = true;
+                modificadoSi.disabled = false;
+                modificadoNo.disabled = false;
+            } else if (preconNo) {
+                creador.disabled = false;
+                modificadoSi.disabled = true;
+                modificadoNo.disabled = true;
+            } else {
+                creador.disabled = false;
+                modificadoSi.disabled = false;
+                modificadoNo.disabled = false;
+            }
+        }
+        
+
+        function mostrar5Formulario() {
+            const patataContainer = document.getElementById('patata-container');
+            if (patataContainer.style.display === 'block') {
+                patataContainer.style.display = 'none';
+            } else {
+                cerrarFormulariosAbiertos();
+                patataContainer.style.display = 'block';
+            }
+        }
+        //<!-- Esto es nuevo -->
+        function guardarDatos() {
+            const deck = document.getElementById('deck').value.trim();
+            const dueño = document.getElementById('dueño').value.trim();
+            const creador = document.getElementById('creador').value.trim();
+            const de_precon = document.getElementById('de_precon').value.trim();
+            const modificado = document.getElementById('modificado').value.trim();
+            const clase = Array.from(document.getElementById('clase').selectedOptions).map(option => option.value);
+
+            if (deck && dueño && creador && de_precon && modificado && clase.length > 0) {
+                const formData = new FormData();
+                formData.append(ENTRY_DECK, deck);
+                formData.append(ENTRY_DUENO, dueño);
+                formData.append(ENTRY_CREADOR, creador);
+                formData.append(ENTRY_PRECON, de_precon);
+                formData.append(ENTRY_MODIFICADO, modificado);
+                clase.forEach(valor => formData.append(ENTRY_CLASE, valor));
+
+                fetch(FORM_ACTION_URL, {
+                    method: "POST",
+                    body: formData,
+                    mode: "cors"
+                }).then(response => {
+                    if (response.ok) {
+                        alert("Datos enviados correctamente.");
+                        document.getElementById("inline-form").reset();
+                    } else {
+                        throw new Error('Error en la respuesta del servidor');
+                    }
+                }).catch(error => {
+                    alert("Hubo un error al enviar los datos.");
+                    console.error(error);
+                });
+            } else {
+                alert("Por favor, complete todos los campos.");
+            }
+        }
+        
    
     </script>
 </body>
