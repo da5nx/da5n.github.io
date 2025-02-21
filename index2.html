@@ -125,29 +125,59 @@
             border: none;
             margin-top: 20px;
         }
-
+        /*Con esto se comprobará el estilo del formulario inscrito */
         #inline-form {
             display: none;
             background-color: lightgray;
-            padding: 15px;
-            border-radius: 10px;
-            width: 80%;
-            max-width: 400px;
+            padding: 20px;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 500px;
         }
+        
+        .form-section {
+            margin-bottom: 1.5rem;
+            padding: 0 15px;
+        }    
 
-        input {
-            width: 100%;
+        input[type="text"] {
+            width: calc(100% - 30px);
+            margin: 5px 15px;
             padding: 8px;
-            margin: 5px 0;
             border: 1px solid #ccc;
-            border-radius: 5px;
+            border-radius: 4px;
+            box-sizing: border-box;
         }
 
-         .radio-options {
+        .radio-options {
             display: flex;
             align-items: center;
-            gap: 10px; /* Espacio entre los elementos */
+            gap: 5px; /* Espacio entre los elementos */
+            margin: 10px 15px;
         }
+        .radio-options label {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .form-spacing {
+            margin-bottom: 25px;
+        }
+
+          .checkbox-group {
+            margin: 10px 15px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .checkbox-group label {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        /*Con esto se comprobará el estilo del formulario inscrito */
     </style>
 </head>
 <body>
@@ -196,33 +226,44 @@
 
     <!-- Formulario directamente en la página -->
     <form id="inline-form">
-        <label for="deck">Nombre del mazo</label>
-        <input type="text" name="entry.4" id="deck" placeholder="Nombre del mazo">
-    
-        <label for="dueño">Dueño</label>
-        <input type="text" name="entry.5" id="dueño" placeholder="Nombre del dueño">
-
-        <label for="creador">Nombre del creador</label>
-        <input type="text" name="entry.6" id="creador" placeholder="Nombre del creador">
-
-        <label>Precon?</label>
-        <div class="radio-options">
-            <input type="radio" id="precon-si" name="entry.1" value="SI" onclick="controlarCampos()">
-            <label for="precon-si">Sí</label>
-            
-            <input type="radio" id="precon-no" name="entry.1" value="NO" onclick="controlarCampos()">
-            <label for="precon-no">No</label>
+        <div class="form-section form-spacing">
+            <label for="deck">Nombre del mazo</label>
+            <input type="text" name="entry.4" id="deck" placeholder="Nombre del mazo">
         </div>
         
-        <label for="modificado">Mazo modificado</label>
-        <div class="radio-options">
-            <input type="radio" id="modificado-si" name="entry.3" value="SI" onclick="controlarCampos()">
-            <label for="modificado-si">Sí</label>
+        <div class="form-section form-spacing">
+            <label for="dueño">Dueño</label>
+            <input type="text" name="entry.5" id="dueño" placeholder="Nombre del dueño">
+        </div>
             
-            <input type="radio" id="modificado-no" name="entry.3" value="NO" onclick="controlarCampos()">
-            <label for="modificado-no">No</label>
+        <div class="form-section form-spacing">
+            <label for="creador">Nombre del creador</label>
+            <input type="text" name="entry.6" id="creador" placeholder="Nombre del creador">
+        </div>            
+
+        <div class="form-section form-spacing">
+            <label>Precon?</label>
+            <div class="radio-options">
+                <input type="radio" id="precon-si" name="entry.1" value="SI" onclick="controlarCampos()">
+                <label for="precon-si">Sí</label>
+                
+                <input type="radio" id="precon-no" name="entry.1" value="NO" onclick="controlarCampos()">
+                <label for="precon-no">No</label>
+            </div>
         </div>
 
+        <div class="form-section form-spacing">
+            <label for="modificado">Mazo modificado</label>
+            <div class="radio-options">
+                <input type="radio" id="modificado-si" name="entry.3" value="SI" onclick="controlarCampos()">
+                <label for="modificado-si">Sí</label>
+                
+                <input type="radio" id="modificado-no" name="entry.3" value="NO" onclick="controlarCampos()">
+                <label for="modificado-no">No</label>
+            </div>
+        </div>
+        
+    <div class="form-section">
         <label>Colores</label>
         <div class="radio-options">
             <input type="checkbox" name="entry.2" value="Rojo"><label>Rojo</label>
@@ -230,8 +271,8 @@
             <input type="checkbox" name="entry.2" value="Azul"><label>Azul</label>
             <input type="checkbox" name="entry.2" value="Blanco"><label>Blanco</label>
             <input type="checkbox" name="entry.2" value="Negro"><label>Negro</label>
-        </div>
-
+         </div>
+      </div>    
         <button class="btn form-btn" type="submit">Guardar Datos</button>
     </form>
 
