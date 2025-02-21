@@ -193,24 +193,27 @@
     <!-- Botón para mostrar el formulario incrustado -->
     <button class="btn embed-btn" onclick="mostrarFormulario()">Ingresar Datos en esta Página (2)</button>
 
-    <!-- Contenedor para el formulario incrustado -->
-    <div id="form-embed" style="display: none;">
-        <iframe id="google-form" src="" width="640" height="800">Cargando...</iframe>
-    </div>
-
     <!-- Botón para mostrar el formulario directamente en la página (3) -->
     <button class="btn inline-btn" onclick="mostrarFormularioInline()">Ingresar Datos en esta Página (3)</button>
+    
+    <!-- Botón para mostrar el formulario incrustado (4) -->
+    <button class="btn embed-btn" onclick="mostrar5Formulario()">Ingresar Datos en esta Página (4)</button>
+    
+        <!-- Contenedor para el formulario incrustado -->
+        <div id="form-embed" style="display: none;">
+            <iframe id="google-form" src="" width="640" height="800">Cargando...</iframe>
+        </div>
 
     <!-- Formulario directamente en la página -->
     <form id="inline-form">
         <label for="deck">Nombre del mazo</label>
-        <input type="text" id="deck" placeholder="Nombre del mazo">
-
+        <input type="text" name="entry.4" id="deck" placeholder="Nombre del mazo">
+    
         <label for="dueño">Dueño</label>
-        <input type="text" id="dueño" placeholder="Nombre del dueño">
+        <input type="text" name="entry.5" id="dueño" placeholder="Nombre del dueño">
 
         <label for="creador">Nombre del creador</label>
-        <input type="text" id="creador" placeholder="Nombre del creador">
+        <input type="text" name="entry.6" id="creador" placeholder="Nombre del creador">
 
         <label>Precon?</label>
         <div class="radio-options">
@@ -247,12 +250,12 @@
 
     <script>
         const FORM_URL = 'https://docs.google.com/forms/d/13NSbSvG8fOsbuLTScUOZRJqi-IFdG_kxJo3Pdc_54aQ/viewform';
-        const ENTRY_DECK = "entry.1624728211";
-        const ENTRY_DUENO = "entry.1061561435";
-        const ENTRY_CREADOR = "entry.192837465";
-        const ENTRY_PRECON = "entry.1118348865";
-        const ENTRY_MODIFICADO = "entry.257092737";
-        const ENTRY_CLASE = "entry.2111253431";
+    const ENTRY_DECK = "entry.1";
+        const ENTRY_DUENO = "entry.4";
+        const ENTRY_CREADOR = "entry.5";
+        const ENTRY_PRECON = "entry.6";
+        const ENTRY_MODIFICADO = "entry.3";
+        const ENTRY_CLASE = "entry.2";
         
         function cerrarFormulariosAbiertos() {
             const formEmbed = document.getElementById('form-embed');
