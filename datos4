@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Datos Almacenados</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        table { width: 100%; border-collapse: collapse; margin: 20px 0; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+    </style>
+</head>
+<body>
+    <h1>Datos Almacenados</h1>
+    <table id="tablaCompleta">
+        <thead>
+            <tr>
+                <th>Mazo</th>
+                <th>Dueño</th>
+                <th>Creador</th>
+                <th>Valor</th>
+                <th>Cartas Totales</th>
+                <th>Cartas <0.5€</th>
+                <th>Cartas ≥0.5€</th>
+                <th>Cartas <1€</th>
+                <th>Cartas ≥1€</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+
+    <script>
+        const datos = JSON.parse(localStorage.getItem('magicData')) || [];
+        const tbody = document.querySelector('#tablaCompleta tbody');
+        
+        tbody.innerHTML = datos.map(mazo => `
+            <tr>
+                <td>${mazo.nombre}</td>
+                <td>${mazo.dueno}</td>
+                <td>${mazo.creador}</td>
+                <td>${mazo.valor.toFixed(2)}€</td>
+                <td>${mazo.cartas.total}</td>
+                <td>${mazo.cartas.menor05}</td>
+                <td>${mazo.cartas.mayor05}</td>
+                <td>${mazo.cartas.menor1}</td>
+                <td>${mazo.cartas.mayor1}</td>
+            </tr>
+        `).join('');
+    </script>
+</body>
+</html>
