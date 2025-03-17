@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Magic Deck Manager</title>
+    <style>
+        /* Manteniendo los estilos originales */
+        body { font-family: Arial, sans-serif; margin: 0; padding: 0; }
+        .top-bar { 
+            background: #333; color: white; padding: 10px; 
+            position: fixed; width: 100%; top: 0; 
+            display: flex; justify-content: space-between;
+        }
+        .button-group button {
+            background: #555; color: white; border: none;
+            padding: 10px 20px; margin: 0 5px; cursor: pointer;
+        }
+        .button-group button.active { background: #777; }
+        .content { margin-top: 60px; padding: 20px; }
+        table { width: 100%; border-collapse: collapse; margin: 20px 0; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+    </style>
+</head>
+<body>
+    <div class="top-bar">
+        <div>Magic Deck Manager</div>
+        <div class="button-group">
+            <button onclick="showSection('intro')" class="active">Introducción</button>
+            <button onclick="showSection('base')">Opción Base</button>
+            <button onclick="showSection('menor05')">Valor <0.5€</button>
+            <button onclick="showSection('mayor05')">Valor ≥0.5€</button>
+            <button onclick="showSection('menor1')">Menor a 1€</button>
+            <button onclick="showSection('mayor1')">Mayor a 1€</button>
+        </div>
+    </div>
+
+    <div class="content">
+        <!-- Sección Introducción de Datos -->
+        <div id="intro" class="section active">
+            <h2>Introducción de Datos</h2>
+            <form id="mainForm">
+                <input type="text" id="nombreMazo" placeholder="Nombre del Mazo" required>
+                <input type="text" id="dueno" placeholder="Dueño" required>
+                <input type="text" id="creador" placeholder="Creador" required>
+                <select id="precon">
+                    <option value="SI">SI</option>
+                    <option value="NO">NO</option>
+                </select>
+                <input type="number" id="valor" step="0.01" placeholder="Valor (€)">
+                <button type="button" onclick="guardarMazo()">Guardar</button>
+            </form>
+        </div>
+
+        <!-- Sección Base -->
+        <div id="base" class="section">
+            <h2>Opción Base</h2>
+            <table id="tablaBase">
+                <thead>
+                    <tr>
+                        <th>Dueño</th>
+                        <th>Creador</th>
+                        <th>Nombre</th>
+                        <th>Precon</th>
+                        <th>Clase</th>
+                        <th>Colores</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+
+        <!-- Sección Valor <0.5€ -->
+        <div id="menor05" class="section">
+            <h2>Valor <0.5€</h2>
+            <table id="tablaMenor05">
+                <thead>
+                    <tr>
+                        <th>Mazo</th>
+                        <th>Dueño</th>
+                        <th>Valor Total</th>
+                        <th>Cartas <0.5€</th>
+                        <th>Suma Parcial</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+
+        <!-- Sección Valor ≥0.5€ -->
+        <div id="mayor05" class="section">
+            <h2>Valor ≥0.5€</h2>
+            <table id="tablaMayor05">
+                <thead>
+                    <tr>
+                        <th>Mazo</th>
+                        <th>Dueño</th>
+                        <th>Valor Total</th>
+                        <th>Cartas ≥0.5€</th>
+                        <th>Suma Parcial</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+
+        <!-- Sección Menor a 1€ -->
+        <div id="menor1" class="section">
+            <h2>Menor a 1€</h2>
+            <table id="tablaMenor1">
+                <thead>
+                    <tr>
+                        <th>Mazo</th>
+                        <th>Dueño</th>
+                        <th>Valor Total</th>
+                        <th>Cartas <1€</th>
+                        <th>Suma Parcial</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+
+        <!-- Sección Mayor a 1€ -->
+        <div id="mayor1" class="section">
+            <h2>Mayor a 1€</h2>
+            <table id="tablaMayor1">
+                <thead>
+                    <tr>
+                        <th>Mazo</th>
+                        <th>Dueño</th>
+                        <th>Valor Total</th>
+                        <th>Cartas ≥1€</th>
+                        <th>Suma Parcial</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+
+        <script>
+            let datos = JSON.parse(localStorage.getItem('magicData')) || [];
+
+            function showSection(sectionId) {
+                document.querySelectorAll('.section').forEach(sec => sec.style.display = 'none');
+                document.querySelectorAll('.button-group button').forEach(btn => btn.classList.remove('active'));
+                document.getElementById(sectionId).style.display = 'block';
+                event.target.classList.add('active');
+                actualizarTablas();
+            }
+
+            function guardarMazo() {
+                const nuevoMazo = {
+                    nombre: document.getElementById('nombreMazo').value,
+                    dueno: document.getElementById('dueno').value,
+                    creador: document.getElementById('creador').value,
+                    precon: document.getElementById('precon').value,
+                    valor: parseFloat(document.getElementById('valor').value) || 0,
+                    cartas: {
+                        total: 0,
+                        menor05: 0,
+                        mayor05: 0,
+                        menor1: 0,
+                        mayor1: 0
+                    }
+                };
+
+                // Simulación de cálculos basados en el Excel
+                nuevoMazo.cartas.total = Math.floor(Math.random() * 100) + 50;
+                nuevoMazo.cartas.menor05 = Math.floor(nuevoMazo.cartas.total * 0.3);
+                nuevoMazo.cartas.mayor05 = nuevoMazo.cartas.total - nuevoMazo.cartas.menor05;
+                nuevoMazo.cartas.menor1 = Math.floor(nuevoMazo.cartas.total * 0.6);
+                nuevoMazo.cartas.mayor1 = nuevoMazo.cartas.total - nuevoMazo.cartas.menor1;
+
+                datos.push(nuevoMazo);
+                localStorage.setItem('magicData', JSON.stringify(datos));
+                actualizarTablas();
+                document.getElementById('mainForm').reset();
+            }
+
+            function actualizarTablas() {
+                actualizarTablaBase();
+                actualizarTablaMenor05();
+                actualizarTablaMayor05();
+                actualizarTablaMenor1();
+                actualizarTablaMayor1();
+            }
+
+            function actualizarTablaBase() {
+                const tbody = document.querySelector('#tablaBase tbody');
+                tbody.innerHTML = datos.map(mazo => `
+                    <tr>
+                        <td>${mazo.dueno}</td>
+                        <td>${mazo.creador}</td>
+                        <td>${mazo.nombre}</td>
+                        <td>${mazo.precon}</td>
+                        <td>${mazo.valor >= 1 ? 'Premium' : 'Standard'}</td>
+                        <td>${mazo.valor >= 0.5 ? 'Multicolor' : 'Monocolor'}</td>
+                    </tr>
+                `).join('');
+            }
+
+            function actualizarTablaMenor05() {
+                const tbody = document.querySelector('#tablaMenor05 tbody');
+                tbody.innerHTML = datos.map(mazo => `
+                    <tr>
+                        <td>${mazo.nombre}</td>
+                        <td>${mazo.dueno}</td>
+                        <td>${mazo.valor.toFixed(2)}€</td>
+                        <td>${mazo.cartas.menor05}</td>
+                        <td>${(mazo.cartas.menor05 * 0.4).toFixed(2)}€</td>
+                    </tr>
+                `).join('');
+            }
+
+            function actualizarTablaMayor05() {
+                const tbody = document.querySelector('#tablaMayor05 tbody');
+                tbody.innerHTML = datos.map(mazo => `
+                    <tr>
+                        <td>${mazo.nombre}</td>
+                        <td>${mazo.dueno}</td>
+                        <td>${mazo.valor.toFixed(2)}€</td>
+                        <td>${mazo.cartas.mayor05}</td>
+                        <td>${(mazo.cartas.mayor05 * 0.6).toFixed(2)}€</td>
+                    </tr>
+                `).join('');
+            }
+
+            function actualizarTablaMenor1() {
+                const tbody = document.querySelector('#tablaMenor1 tbody');
+                tbody.innerHTML = datos.map(mazo => `
+                    <tr>
+                        <td>${mazo.nombre}</td>
+                        <td>${mazo.dueno}</td>
+                        <td>${mazo.valor.toFixed(2)}€</td>
+                        <td>${mazo.cartas.menor1}</td>
+                        <td>${(mazo.cartas.menor1 * 0.75).toFixed(2)}€</td>
+                    </tr>
+                `).join('');
+            }
+
+            function actualizarTablaMayor1() {
+                const tbody = document.querySelector('#tablaMayor1 tbody');
+                tbody.innerHTML = datos.map(mazo => `
+                    <tr>
+                        <td>${mazo.nombre}</td>
+                        <td>${mazo.dueno}</td>
+                        <td>${mazo.valor.toFixed(2)}€</td>
+                        <td>${mazo.cartas.mayor1}</td>
+                        <td>${(mazo.cartas.mayor1 * 0.9).toFixed(2)}€</td>
+                    </tr>
+                `).join('');
+            }
+
+            // Cargar datos al inicio
+            actualizarTablas();
+        </script>
+    </div>
+</body>
+</html><!DOCTYPE html>
+<html>
+<head>
+    <title>Magic Deck Manager</title>
+    <style>
+        /* Manteniendo los estilos originales */
+        body { font-family: Arial, sans-serif; margin: 0; padding: 0; }
+        .top-bar { 
+            background: #333; color: white; padding: 10px; 
+            position: fixed; width: 100%; top: 0; 
+            display: flex; justify-content: space-between;
+        }
+        .button-group button {
+            background: #555; color: white; border: none;
+            padding: 10px 20px; margin: 0 5px; cursor: pointer;
+        }
+        .button-group button.active { background: #777; }
+        .content { margin-top: 60px; padding: 20px; }
+        table { width: 100%; border-collapse: collapse; margin: 20px 0; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+    </style>
+</head>
+<body>
+    <div class="top-bar">
+        <div>Magic Deck Manager</div>
+        <div class="button-group">
+            <button onclick="showSection('intro')" class="active">Introducción</button>
+            <button onclick="showSection('base')">Opción Base</button>
+            <button onclick="showSection('menor05')">Valor <0.5€</button>
+            <button onclick="showSection('mayor05')">Valor ≥0.5€</button>
+            <button onclick="showSection('menor1')">Menor a 1€</button>
+            <button onclick="showSection('mayor1')">Mayor a 1€</button>
+        </div>
+    </div>
+
+    <div class="content">
+        <!-- Sección Introducción de Datos -->
+        <div id="intro" class="section active">
+            <h2>Introducción de Datos</h2>
+            <form id="mainForm">
+                <input type="text" id="nombreMazo" placeholder="Nombre del Mazo" required>
+                <input type="text" id="dueno" placeholder="Dueño" required>
+                <input type="text" id="creador" placeholder="Creador" required>
+                <select id="precon">
+                    <option value="SI">SI</option>
+                    <option value="NO">NO</option>
+                </select>
+                <input type="number" id="valor" step="0.01" placeholder="Valor (€)">
+                <button type="button" onclick="guardarMazo()">Guardar</button>
+            </form>
+        </div>
+
+        <!-- Sección Base -->
+        <div id="base" class="section">
+            <h2>Opción Base</h2>
+            <table id="tablaBase">
+                <thead>
+                    <tr>
+                        <th>Dueño</th>
+                        <th>Creador</th>
+                        <th>Nombre</th>
+                        <th>Precon</th>
+                        <th>Clase</th>
+                        <th>Colores</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+
+        <!-- Sección Valor <0.5€ -->
+        <div id="menor05" class="section">
+            <h2>Valor <0.5€</h2>
+            <table id="tablaMenor05">
+                <thead>
+                    <tr>
+                        <th>Mazo</th>
+                        <th>Dueño</th>
+                        <th>Valor Total</th>
+                        <th>Cartas <0.5€</th>
+                        <th>Suma Parcial</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+
+        <!-- Sección Valor ≥0.5€ -->
+        <div id="mayor05" class="section">
+            <h2>Valor ≥0.5€</h2>
+            <table id="tablaMayor05">
+                <thead>
+                    <tr>
+                        <th>Mazo</th>
+                        <th>Dueño</th>
+                        <th>Valor Total</th>
+                        <th>Cartas ≥0.5€</th>
+                        <th>Suma Parcial</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+
+        <!-- Sección Menor a 1€ -->
+        <div id="menor1" class="section">
+            <h2>Menor a 1€</h2>
+            <table id="tablaMenor1">
+                <thead>
+                    <tr>
+                        <th>Mazo</th>
+                        <th>Dueño</th>
+                        <th>Valor Total</th>
+                        <th>Cartas <1€</th>
+                        <th>Suma Parcial</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+
+        <!-- Sección Mayor a 1€ -->
+        <div id="mayor1" class="section">
+            <h2>Mayor a 1€</h2>
+            <table id="tablaMayor1">
+                <thead>
+                    <tr>
+                        <th>Mazo</th>
+                        <th>Dueño</th>
+                        <th>Valor Total</th>
+                        <th>Cartas ≥1€</th>
+                        <th>Suma Parcial</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+
+        <script>
+            let datos = JSON.parse(localStorage.getItem('magicData')) || [];
+
+            function showSection(sectionId) {
+                document.querySelectorAll('.section').forEach(sec => sec.style.display = 'none');
+                document.querySelectorAll('.button-group button').forEach(btn => btn.classList.remove('active'));
+                document.getElementById(sectionId).style.display = 'block';
+                event.target.classList.add('active');
+                actualizarTablas();
+            }
+
+            function guardarMazo() {
+                const nuevoMazo = {
+                    nombre: document.getElementById('nombreMazo').value,
+                    dueno: document.getElementById('dueno').value,
+                    creador: document.getElementById('creador').value,
+                    precon: document.getElementById('precon').value,
+                    valor: parseFloat(document.getElementById('valor').value) || 0,
+                    cartas: {
+                        total: 0,
+                        menor05: 0,
+                        mayor05: 0,
+                        menor1: 0,
+                        mayor1: 0
+                    }
+                };
+
+                // Simulación de cálculos basados en el Excel
+                nuevoMazo.cartas.total = Math.floor(Math.random() * 100) + 50;
+                nuevoMazo.cartas.menor05 = Math.floor(nuevoMazo.cartas.total * 0.3);
+                nuevoMazo.cartas.mayor05 = nuevoMazo.cartas.total - nuevoMazo.cartas.menor05;
+                nuevoMazo.cartas.menor1 = Math.floor(nuevoMazo.cartas.total * 0.6);
+                nuevoMazo.cartas.mayor1 = nuevoMazo.cartas.total - nuevoMazo.cartas.menor1;
+
+                datos.push(nuevoMazo);
+                localStorage.setItem('magicData', JSON.stringify(datos));
+                actualizarTablas();
+                document.getElementById('mainForm').reset();
+            }
+
+            function actualizarTablas() {
+                actualizarTablaBase();
+                actualizarTablaMenor05();
+                actualizarTablaMayor05();
+                actualizarTablaMenor1();
+                actualizarTablaMayor1();
+            }
+
+            function actualizarTablaBase() {
+                const tbody = document.querySelector('#tablaBase tbody');
+                tbody.innerHTML = datos.map(mazo => `
+                    <tr>
+                        <td>${mazo.dueno}</td>
+                        <td>${mazo.creador}</td>
+                        <td>${mazo.nombre}</td>
+                        <td>${mazo.precon}</td>
+                        <td>${mazo.valor >= 1 ? 'Premium' : 'Standard'}</td>
+                        <td>${mazo.valor >= 0.5 ? 'Multicolor' : 'Monocolor'}</td>
+                    </tr>
+                `).join('');
+            }
+
+            function actualizarTablaMenor05() {
+                const tbody = document.querySelector('#tablaMenor05 tbody');
+                tbody.innerHTML = datos.map(mazo => `
+                    <tr>
+                        <td>${mazo.nombre}</td>
+                        <td>${mazo.dueno}</td>
+                        <td>${mazo.valor.toFixed(2)}€</td>
+                        <td>${mazo.cartas.menor05}</td>
+                        <td>${(mazo.cartas.menor05 * 0.4).toFixed(2)}€</td>
+                    </tr>
+                `).join('');
+            }
+
+            function actualizarTablaMayor05() {
+                const tbody = document.querySelector('#tablaMayor05 tbody');
+                tbody.innerHTML = datos.map(mazo => `
+                    <tr>
+                        <td>${mazo.nombre}</td>
+                        <td>${mazo.dueno}</td>
+                        <td>${mazo.valor.toFixed(2)}€</td>
+                        <td>${mazo.cartas.mayor05}</td>
+                        <td>${(mazo.cartas.mayor05 * 0.6).toFixed(2)}€</td>
+                    </tr>
+                `).join('');
+            }
+
+            function actualizarTablaMenor1() {
+                const tbody = document.querySelector('#tablaMenor1 tbody');
+                tbody.innerHTML = datos.map(mazo => `
+                    <tr>
+                        <td>${mazo.nombre}</td>
+                        <td>${mazo.dueno}</td>
+                        <td>${mazo.valor.toFixed(2)}€</td>
+                        <td>${mazo.cartas.menor1}</td>
+                        <td>${(mazo.cartas.menor1 * 0.75).toFixed(2)}€</td>
+                    </tr>
+                `).join('');
+            }
+
+            function actualizarTablaMayor1() {
+                const tbody = document.querySelector('#tablaMayor1 tbody');
+                tbody.innerHTML = datos.map(mazo => `
+                    <tr>
+                        <td>${mazo.nombre}</td>
+                        <td>${mazo.dueno}</td>
+                        <td>${mazo.valor.toFixed(2)}€</td>
+                        <td>${mazo.cartas.mayor1}</td>
+                        <td>${(mazo.cartas.mayor1 * 0.9).toFixed(2)}€</td>
+                    </tr>
+                `).join('');
+            }
+
+            // Cargar datos al inicio
+            actualizarTablas();
+        </script>
+    </div>
+</body>
+</html>
