@@ -28,8 +28,8 @@
             <button onclick="showSection('base')">Opción Base</button>
             <button onclick="showSection('menor05')">Valor <0.5€</button>
             <button onclick="showSection('mayor05')">Valor ≥0.5€</button>
-            <button onclick="showSection('menor1')">Menor a 1€</button>
-            <button onclick="showSection('mayor1')">Mayor a 1€</button>
+            <button onclick="showSection('menor1')">Valor <1€</button>
+            <button onclick="showSection('mayor1')">Valor ≥1€</button>
         </div>
     </div>
 
@@ -38,12 +38,9 @@
         <div id="intro" class="section active">
             <h2>Introducción de Datos</h2>
             <form id="mainForm">
-                <input type="text" id="nombreMazo" placeholder="Nombre del Mazo" required>
-                <input type="text" id="dueno" placeholder="Dueño" required>
-                <input type="text" id="creador" placeholder="Creador" required>
-                <select id="precon">
-                    <option value="SI">SI</option>
-                    <option value="NO">NO</option>
+                <input type="text" id="Carta" placeholder="Nombre de la carta" required>
+                <input type="text" id="expansión" placeholder="expansión" required>
+                <input type="text" id="origen" placeholder="origen" required>
                 </select>
                 <input type="number" id="valor" step="0.01" placeholder="Valor (€)">
                 <button type="button" onclick="guardarMazo()">Guardar</button>
@@ -56,12 +53,9 @@
             <table id="tablaBase">
                 <thead>
                     <tr>
-                        <th>Dueño</th>
-                        <th>Creador</th>
-                        <th>Nombre</th>
-                        <th>Precon</th>
-                        <th>Clase</th>
-                        <th>Colores</th>
+                        <th>carta</th>
+                        <th>expansión</th>
+                        <th>origen</th>
                     </tr>
                 </thead>
                 <tbody></tbody>
@@ -74,11 +68,11 @@
             <table id="tablaMenor05">
                 <thead>
                     <tr>
-                        <th>Mazo</th>
-                        <th>Dueño</th>
-                        <th>Valor Total</th>
-                        <th>Cartas <0.5€</th>
-                        <th>Suma Parcial</th>
+                        <th>carta</th>
+                        <th>expansión</th>
+                        <th>Valor</th>
+                        <th>origen</th>
+                        <th>Suma Total</th>
                     </tr>
                 </thead>
                 <tbody></tbody>
@@ -91,11 +85,11 @@
             <table id="tablaMayor05">
                 <thead>
                     <tr>
-                        <th>Mazo</th>
-                        <th>Dueño</th>
-                        <th>Valor Total</th>
-                        <th>Cartas ≥0.5€</th>
-                        <th>Suma Parcial</th>
+                        <th>carta</th>
+                        <th>expansión</th>
+                        <th>Valor</th>
+                        <th>origen</th>
+                        <th>Suma Total</th>
                     </tr>
                 </thead>
                 <tbody></tbody>
@@ -108,11 +102,11 @@
             <table id="tablaMenor1">
                 <thead>
                     <tr>
-                        <th>Mazo</th>
-                        <th>Dueño</th>
-                        <th>Valor Total</th>
-                        <th>Cartas <1€</th>
-                        <th>Suma Parcial</th>
+                        <th>carta</th>
+                        <th>expansión</th>
+                        <th>Valor</th>
+                        <th>origen</th>
+                        <th>Suma Total</th>
                     </tr>
                 </thead>
                 <tbody></tbody>
@@ -125,11 +119,11 @@
             <table id="tablaMayor1">
                 <thead>
                     <tr>
-                        <th>Mazo</th>
-                        <th>Dueño</th>
-                        <th>Valor Total</th>
-                        <th>Cartas ≥1€</th>
-                        <th>Suma Parcial</th>
+                        <th>carta</th>
+                        <th>expansión</th>
+                        <th>Valor</th>
+                        <th>origen</th>
+                        <th>Suma Total</th>
                     </tr>
                 </thead>
                 <tbody></tbody>
@@ -147,19 +141,18 @@
                 actualizarTablas();
             }
 
-            function guardarMazo() {
-                const nuevoMazo = {
-                    nombre: document.getElementById('nombreMazo').value,
-                    dueno: document.getElementById('dueno').value,
-                    creador: document.getElementById('creador').value,
-                    precon: document.getElementById('precon').value,
+            function guardarcarta() {
+                const carta = {
+                    carta: document.getElementById('nombrecarta').value,
+                    expansión: document.getElementById('expansión').value,
+                    origen: document.getElementById('origen').value,
                     valor: parseFloat(document.getElementById('valor').value) || 0,
                     cartas: {
                         total: 0,
-                        menor05: 0,
-                        mayor05: 0,
-                        menor1: 0,
-                        mayor1: 0
+                        menor05: 0,5
+                        mayor05: 0,5
+                        menor1: 1
+                        mayor1: 1
                     }
                 };
 
