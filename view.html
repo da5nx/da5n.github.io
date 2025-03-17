@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visualizar Datos - Datos5</title>
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore.js"></script>
+</head>
+<body>
+    <h1>Datos Almacenados</h1>
+    <ul id="dataList"></ul>
+
+    <p id="message"></p>
+
+    <script src="script.js"></script>
+    <script>
+        // Mostrar datos desde Firestore
+        async function loadData() {
+            const dataContainer = document.getElementById('dataList');
+            dataContainer.innerHTML = ''; // Limpiar lista
+
+            try {
+                const querySnapshot = await getDocs(collection(db, "users"));
+                if (querySnapshot.empty) {
+                    document.getElementById('message').textContent = 'No hay datos disponibles.';
+                    return;
+                }
+
+                querySnapshot.forEach((doc) => {
+                    const data = doc.data();
+                    const listItem = document.createElement('li');
+                    listItem.textContent = `Nombre: ${data.name}, Email: ${data.email}`;
+                    dataContainer.appendChild(listItem);
+                });
+            } catch (error) {
+                console.error("Error al cargar los datos:", error);
+                document.getElementById('message').textContent = 'Error al cargar los datos.';
+            }
+        }
+
+        // Cargar datos al cargar la página
+        window.onload = loadData;
+    </script>
+</body>
+</html>
