@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Ingresar Datos</title>
     <style>
         body, html {
@@ -10,9 +10,10 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            height: 100vh;
+            min-height: 100vh;
             margin: 0;
             text-align: center;
+            font-size: 16px;
         }
         
         .background-container {
@@ -22,10 +23,11 @@
             width: 100%;
             height: 100%;
             background: url(imagenes/imagen1.jpg) no-repeat center center/cover;
-            filter: blur(10px); /* Ajusta el nivel de difuminado */
-            z-index: -1; /* Para que quede detrás del contenido */
+            filter: blur(10px);
+            z-index: -1;
         }
-        /* Estilos para la barra superior */
+
+        /* Barra de navegación mejorada */
         .navbar-container {
             display: flex;
             align-items: center;
@@ -60,6 +62,7 @@
             display: flex;
             padding: 0;
             margin: 0;
+            transition: all 0.3s ease;
         }
 
         .navbar-menu li {
@@ -71,61 +74,119 @@
             color: black;
             font-size: 14px;
             padding: 5px 10px;
+            white-space: nowrap;
         }
 
-        .navbar-menu li a:hover {
-            text-decoration: underline;
+        .hamburger {
+            display: none;
+            font-size: 24px;
+            cursor: pointer;
+            padding: 5px;
         }
 
-        .highlight {
-            color: red;
+        /* Contenido principal responsive */
+        main {
+            margin-top: 60px;
+            width: 100%;
+            padding: 15px;
+            box-sizing: border-box;
         }
 
-        .contact-highlight {
-            background-color: #e0e0e0;
-            padding: 5px 10px;
-            border-radius: 5px;
-        }
-
-        /* Manteniendo los estilos originales */
         #data-container {
             background-color: lightgray;
             padding: 15px;
             border-radius: 10px;
-            width: 80%;
+            width: 90%;
             max-width: 400px;
+            margin: 10px auto;
         }
-       /* Ajustar el contenido para que no se superponga con la barra */
-        main {
-            margin-top: 60px;
-        }
+
         .btn {
             margin-top: 10px;
-            padding: 10px;
+            padding: 12px 20px;
             cursor: pointer;
             border: none;
             border-radius: 5px;
-            transition: background-color 0.3s ease;
+            transition: all 0.3s ease;
             color: white;
+            width: auto;
+            min-height: 44px;
+            touch-action: manipulation;
+            font-size: 16px;
         }
 
-        .nav-btn { background-color: blue; }
-        .nav-btn:hover { background-color: darkblue; }
+        /* Estilos para móviles */
+        @media (max-width: 768px) {
+            .navbar-container {
+                padding: 8px 10px;
+            }
 
-        .form-btn { background-color: green; }
-        .form-btn:hover { background-color: darkgreen; }
+            .navbar-brand span {
+                font-size: 16px;
+            }
 
-        .embed-btn { background-color: purple; }
-        .embed-btn:hover { background-color: darkmagenta; }
+            .navbar-brand img {
+                height: 25px;
+            }
 
-        .inline-btn { background-color: orange; }
-        .inline-btn:hover { background-color: darkorange; }
+            .hamburger {
+                display: block;
+            }
 
-        iframe {
-            border: none;
-            margin-top: 20px;
+            .navbar-menu {
+                display: none;
+                position: absolute;
+                top: 50px;
+                right: 10px;
+                background: white;
+                flex-direction: column;
+                width: 200px;
+                box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+                border-radius: 5px;
+            }
+
+            .navbar-menu.active {
+                display: flex;
+            }
+
+            .navbar-menu li {
+                margin: 5px 0;
+            }
+
+            .navbar-menu li a {
+                padding: 10px 15px;
+                display: block;
+            }
+
+            .btn {
+                width: 90%;
+                font-size: 14px;
+                padding: 15px;
+            }
+
+            #inline-form {
+                width: 95%;
+                padding: 10px;
+            }
+
+            input[type="text"] {
+                font-size: 16px;
+                padding: 12px;
+            }
+
+            .radio-options, .checkbox-group {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+
+            iframe {
+                width: 100% !important;
+                height: 80vh;
+            }
         }
-        /*Con esto se comprobará el estilo del formulario inscrito */
+
+        /* Estilos específicos de formulario */
         #inline-form {
             display: none;
             background-color: lightgray;
@@ -133,12 +194,13 @@
             border-radius: 20px;
             width: 90%;
             max-width: 500px;
+            margin: 10px auto;
         }
-        
+
         .form-section {
             margin-bottom: 1.5rem;
             padding: 0 15px;
-        }    
+        }
 
         input[type="text"] {
             width: calc(100% - 30px);
@@ -149,35 +211,11 @@
             box-sizing: border-box;
         }
 
-        .radio-options {
-            display: flex;
-            align-items: center;
-            gap: 5px; /* Espacio entre los elementos */
-            margin: 10px 15px;
-        }
-        .radio-options label {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
-
-        .form-spacing {
-            margin-bottom: 25px;
-        }
-
-          .checkbox-group {
-            margin: 10px 15px;
-            display: flex;
-            flex-wrap: wrap;
-            gap: 15px;
-        }
-
-        .checkbox-group label {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
-        /*Con esto se comprobará el estilo del formulario inscrito */
+        /* Colores de botones */
+        .nav-btn { background-color: blue; }
+        .form-btn { background-color: green; }
+        .embed-btn { background-color: purple; }
+        .inline-btn { background-color: orange; }
     </style>
 </head>
 <body>
@@ -191,6 +229,7 @@
                 <img src="imagenes/imagen1.jpg" alt="Logo">
                 <span>PEREIRA.JS</span>
             </a>
+            <div class="hamburger" onclick="toggleMenu()">☰</div>
             <ul class="navbar-menu">
                 <li><a href="https://da5nx.github.io/da5n.github.io/index.html" class="highlight">.2</a></li>
                 <li><a href="https://da5nx.github.io/da5n.github.io/index4.html" class="highlight">3.</a></li>
@@ -285,8 +324,25 @@
     <button class="btn nav-btn" onclick="window.location.href='datos2.html'">Ver Datos Guardados</button>
 
     <script>
+                // Función del menú hamburguesa
+        function toggleMenu() {
+            const menu = document.querySelector('.navbar-menu');
+            menu.classList.toggle('active');
+        }
+
+        // Ajuste responsivo del iframe
+        function ajustarIframe() {
+            const iframe = document.getElementById('google-form');
+            iframe.style.width = '100%';
+            iframe.style.height = window.innerHeight * 0.8 + 'px';
+        }
+
+        // Inicializar y ajustar en resize
+        window.addEventListener('resize', ajustarIframe);
+        ajustarIframe();
+        
         const FORM_URL = 'https://docs.google.com/forms/d/13NSbSvG8fOsbuLTScUOZRJqi-IFdG_kxJo3Pdc_54aQ/viewform';
-    const ENTRY_DECK = "entry.1";
+        const ENTRY_DECK = "entry.1";
         const ENTRY_DUENO = "entry.4";
         const ENTRY_CREADOR = "entry.5";
         const ENTRY_PRECON = "entry.6";
