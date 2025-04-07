@@ -160,13 +160,13 @@
                     <option value="NO">NO</option>
                 </select>
                 <input type="text" id="creador" placeholder="Creador">
-                <select id="Modificado" multiple size="2">
-                    <option value="AZUL">Azul</option>
-                    <option value="BLANCO">Blanco</option>
-                    <option value="NEGRO">Negro</option>
-                    <option value="ROJO">Rojo</option>
-                    <option value="VERDE">Verde</option>
-                </select>
+                <div class="opciones-multiples">
+                    <label><input type="checkbox" name="AZUL" value="AZUL"> AZUL</label>
+                    <label><input type="checkbox" name="BLANCO" value="BLANCO"> BLANCO</label>
+                    <label><input type="checkbox" name="NEGRO" value="NEGRO"> NEGRO</label>
+                    <label><input type="checkbox" name="ROJO" value="ROJO"> ROJO</label>
+                    <label><input type="checkbox" name="VERDE" value="VERDE"> VERDE</label>
+                </div>
                 <input type="text" id="" placeholder="Creador">
                 <button type="button" onclick="agregarMazo()">Guardar Datos</button>
             </form>
