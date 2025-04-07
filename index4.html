@@ -148,17 +148,6 @@
         </div>
     </nav>
 
-    <div class="top-bar">
-        <div>Magic Deck Data Manager</div>
-        <div class="button-group">
-            <button onclick="showSection('base')" class="active">Opción Base</button>
-            <button onclick="showSection('menor05')">Valor <0.5€</button>
-            <button onclick="showSection('mayor05')">Valor ≥0.5€</button>
-            <button onclick="showSection('menor1')">Menor a 1€</button>
-            <button onclick="showSection('mayor1')">Mayor a 1€</button>
-        </div>
-    </div>
-
     <div class="content">
         <!-- Sección Introducción de Datos -->
         <div id="introduccion" class="section">
@@ -166,11 +155,19 @@
             <form id="dataForm">
                 <input type="text" id="nombreMazo" placeholder="Nombre del Mazo">
                 <input type="text" id="dueño" placeholder="Dueño">
-                <input type="text" id="creador" placeholder="Creador">
                 <select id="precon">
                     <option value="SI">SI</option>
                     <option value="NO">NO</option>
                 </select>
+                <input type="text" id="creador" placeholder="Creador">
+                <select id="Modificado" multiple size="2">
+                    <option value="AZUL">Azul</option>
+                    <option value="BLANCO">Blanco</option>
+                    <option value="NEGRO">Negro</option>
+                    <option value="ROJO">Rojo</option>
+                    <option value="VERDE">Verde</option>
+                </select>
+                <input type="text" id="" placeholder="Creador">
                 <button type="button" onclick="agregarMazo()">Guardar Datos</button>
             </form>
         </div>
@@ -181,10 +178,10 @@
             <table>
                 <thead>
                     <tr>
-                        <th>Dueño</th>
-                        <th>Creador</th>
                         <th>Nombre</th>
+                        <th>Dueño</th>
                         <th>De Precon</th>
+                        <th>Creador</th>
                         <th>Modificado</th>
                         <th>Clase</th>
                         <th>Colores</th>
